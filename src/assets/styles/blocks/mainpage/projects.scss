@@ -1,0 +1,269 @@
+.projects {
+  padding-top: 30px;
+  overflow: hidden;
+  &__filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 0;
+    list-style: none;
+    @include w1200 {
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+      transform: translateX(-24px);
+      width: 100vw;
+    }
+    @include w767 {
+      width: calc(100vw + 8px);
+    }
+  }
+  &-filter {
+    &__wrap {
+      margin-bottom: 75px;
+      background-color: var(--secondary-bg);
+      @include w767 {
+        margin-bottom: 70px;
+      }
+    }
+    &__container {
+      position: relative;
+    }
+    &__item {
+      label {
+        position: relative;
+        display: flex;
+        margin-bottom: 10px;
+        padding: 20px 38px;
+        cursor: pointer;
+        @include w1200 {
+          margin-bottom: 0;
+          padding: 20px 24px;
+        }
+        @include w767 {
+          padding: 16px 24px;
+        }
+        &:hover,
+        &:focus {
+          color: var(--accent);
+        }
+        &:before {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: -100vw;
+          width: 200vw;
+          height: 10px;
+          background-color: var(--main-bg);
+          @include w1200 {
+            display: none;
+          }
+        }
+      }
+      input {
+        &:focus + span {
+          color: var(--accent);
+        }
+        &:checked + span {
+          color: var(--accent);
+        }
+      }
+      span {
+        transition: color 0.2s;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+    }
+    &__clear {
+      position: absolute;
+      top: calc(100% + 23px);
+      right: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      background: none;
+      border: none;
+      color: var(--main-text);
+      cursor: pointer;
+      transition: color 0.2s;
+      font-weight: 600;
+      @include w1200 {
+        top: calc(100% + 28px);
+        right: 16px;
+      }
+      @include w767 {
+        font-weight: 500;
+      }
+      @include w349 {
+        font-size: 12px;
+      }
+      &:hover,
+      &:focus {
+        color: var(--accent);
+      }
+      svg {
+        margin-right: 8px;
+        @include w767 {
+          margin-right: 4px;
+        }
+        path {
+          stroke: currentColor;
+        }
+      }
+    }
+    &__sort {
+      position: absolute;
+      top: calc(100% + 23px);
+      @include w1200 {
+        top: calc(100% + 28px);
+      }
+    }
+    &-sort {
+      &__btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        padding: 0;
+        background: none;
+        border: none;
+        border-radius: 2px;
+        color: var(--main-text);
+        cursor: pointer;
+        transition: color 0.2s;
+        font-weight: 600;
+        @include w767 {
+          font-weight: 500;
+        }
+        @include w349 {
+          font-size: 12px;
+        }
+        &:hover,
+        &:focus {
+          color: var(--accent);
+        }
+        &.active {
+          color: var(--accent);
+        }
+        svg {
+          margin-right: 8px;
+          fill: currentColor;
+          @include w767 {
+            margin-right: 4px;
+          }
+        }
+      }
+      &__list {
+        position: absolute;
+        top: calc(100% + 15px);
+        left: -20px;
+        padding: 5px 0;
+        background-color: var(--secondary-bg);
+        border-radius: 2px;
+        list-style: none;
+        box-shadow: 1px 5px 14px rgba(20, 25, 31, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        @include w767 {
+          top: calc(100% + 10px);
+          left: -16px;
+        }
+        &.active {
+          opacity: 1;
+          visibility: visible;
+          transition: visibility 0s linear, opacity 0.1s linear;
+        }
+      }
+      &__itembtn {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px 20px;
+        background: none;
+        border: none;
+        color: var(--main-text);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: color 0.2s;
+        font-weight: 600;
+        @include w767 {
+          padding: 10px 16px;
+          font-weight: 500;
+        }
+        @include w349 {
+          font-size: 12px;
+        }
+        &:hover,
+        &:focus {
+          color: var(--accent);
+        }
+        &.active {
+          color: var(--accent);
+        }
+        svg {
+          margin-right: 8px;
+          fill: currentColor;
+          @include w767 {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 40px 24px;
+    padding-left: 0;
+    list-style: none;
+    @include w1200 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include w767 {
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 16px;
+    }
+  }
+  &-item {
+    &__link {
+      display: block;
+      height: 100%;
+      padding: 20px;
+      background-color: var(--secondary-bg);
+      border-radius: 5px;
+      transition: color 0.2s;
+      @include w767 {
+        padding: 16px;
+      }
+      &:hover,
+      &:focus {
+        color: var(--accent);
+      }
+    }
+    &__logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: var(--projects-bg);
+    }
+    &__img {
+      width: 100%;
+      max-width: 300px;
+      height: 100%;
+      object-fit: contain;
+    }
+    &__title {
+      font-weight: 600;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      font-size: 22px;
+      @include w767 {
+        margin-top: 20px;
+        margin-bottom: 12px;
+        font-size: 20px;
+      }
+    }
+  }
+}

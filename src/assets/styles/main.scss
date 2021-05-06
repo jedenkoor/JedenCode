@@ -1,0 +1,164 @@
+@import '~normalize.css';
+@import 'variables/mixins';
+@import 'variables/colors';
+@import 'variables/indents';
+@import 'variables/fonts';
+
+:root {
+  --scheme: dark;
+  --main-bg: #222222;
+  --secondary-bg: #2c2c33;
+  --projects-bg: #ebeaec;
+  --main-text: #fff;
+  --accent: #7aedf5;
+  --accent-logo: #50a5ab;
+  --toggle-color-secondary: #eec413;
+}
+
+.light-theme {
+  --scheme: light;
+  --main-bg: #f3f3f3;
+  --secondary-bg: #fff;
+  --projects-bg: #f3f3f3;
+  --main-text: #222222;
+  --accent: #2bc9d4;
+  --accent-logo: #2bc9d4;
+  --toggle-color-secondary: #fe7765;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --scheme: light;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--main-text);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+  }
+}
+
+body {
+  background-color: var(--main-bg);
+  color: var(--main-text);
+  font-family: 'Jura', sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-font-smoothing: antialiased;
+  @include w767 {
+    font-size: 14px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.container {
+  width: 100%;
+  max-width: 1368px;
+  margin: 0 auto;
+  padding: $padding-container;
+  @include w767 {
+    padding: $mobile-padding-container;
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+}
+
+ul,
+ol {
+  margin: 0;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+b {
+  font-weight: bold;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+.h2title {
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 30px;
+  transition: color 0.2s;
+}
+
+.margin-section {
+  margin-bottom: $margin-section;
+  @include w1200 {
+    margin-bottom: $laptop-margin-section;
+  }
+  @include w1023 {
+    margin-bottom: $tablet-margin-section;
+  }
+}
+
+@import 'blocks/common/header';
+@import 'blocks/common/theme-toggle';
+@import 'blocks/common/footer';
+@import 'blocks/mainpage/projects';
