@@ -254,15 +254,33 @@
       height: 100%;
       object-fit: contain;
     }
-    &__title {
-      font-weight: 600;
+    &__top {
+      display: flex;
+      justify-content: space-between;
       margin-top: 15px;
       margin-bottom: 20px;
+    }
+    &__title {
+      margin: 0;
+      font-weight: 600;
       font-size: 22px;
       @include w767 {
-        margin-top: 20px;
-        margin-bottom: 12px;
         font-size: 20px;
+      }
+    }
+    &__descr {
+      margin-bottom: 18px;
+    }
+    &__tags {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0;
+      list-style: none;
+    }
+    &__tag {
+      font-size: 14px;
+      &:not(:last-child) {
+        margin-right: 10px;
       }
     }
   }

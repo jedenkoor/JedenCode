@@ -41,7 +41,7 @@ export default [
   },
   {
     title: 'RA-Studio',
-    description: 'Создание дизайна сайта',
+    description: 'Продажа дизайна для сайта',
     link: 'https://ra-design.jedenkoor.ru',
     image: '/images/projects/ra-studio.svg',
     tags: ['Gulp', 'jQuery', 'Лендинг'],
