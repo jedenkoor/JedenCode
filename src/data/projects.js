@@ -41,7 +41,7 @@ export default [
   },
   {
     title: 'RA-Studio',
-    description: 'Продажа дизайна для сайта',
+    description: 'Продажа дизайна сайтов',
     link: 'https://ra-design.jedenkoor.ru',
     image: '/images/projects/ra-studio.svg',
     tags: ['Gulp', 'jQuery', 'Лендинг'],
@@ -150,5 +150,53 @@ export default [
     image: '/images/projects/dpclo.svg',
     tags: ['Webpack', 'ES6', 'Сайт-визитка'],
     date: '2021.04.30'
+  },
+  {
+    title: 'Dynasty',
+    description: 'Консьерж-сервис аренды транспорта, организации отдыха и деловых встреч',
+    link: 'https://dynasty.jedenkoor.ru/',
+    image: '/images/projects/dynasty.svg',
+    tags: ['Webpack', 'ES6', 'Сайт-визитка', 'Смена темы'],
+    date: '2021.05.18'
+  },
+  {
+    title: 'Growth Point',
+    description: 'Веб студия',
+    link: 'https://growthpoint.jedenkoor.ru/',
+    image: '/images/projects/growthpoint.svg',
+    tags: ['Webpack', 'ES6', 'Корпоративный сайт'],
+    date: '2021.05.24'
+  },
+  {
+    title: 'Growth Point',
+    description: 'Веб студия (Nuxt.js)',
+    link: 'https://nuxtgrowthpoint.jedenkoor.ru/',
+    image: '/images/projects/growthpoint.svg',
+    tags: ['Webpack', 'Nuxt', 'Корпоративный сайт'],
+    date: '2021.06.16'
+  },
+  {
+    title: 'Growth Point',
+    description: 'Веб студия (Обновленный дизайн)',
+    link: 'https://growthpoint2.jedenkoor.ru/',
+    image: '/images/projects/growthpoint.svg',
+    tags: ['Webpack', 'Корпоративный сайт', 'Смена темы'],
+    date: '2021.07.10'
+  },
+  {
+    title: 'Growth Point',
+    description: 'Веб студия (Личный кабинет)',
+    link: 'https://growthpoint2-lk.jedenkoor.ru/',
+    image: '/images/projects/growthpoint.svg',
+    tags: ['Webpack', 'Корпоративный сайт', 'Смена темы'],
+    date: '2021.07.21'
+  },
+  {
+    title: 'Levitacia',
+    description: 'Премиальная одежда (Обновленный дизайн)',
+    link: 'https://levitation2.jedenkoor.ru/',
+    image: '/images/projects/levitacia.png',
+    tags: ['Webpack', 'ES6', 'Интернет-магазин'],
+    date: '2021.08.02'
   }
 ]
