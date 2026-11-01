@@ -33,8 +33,9 @@ jobs:
           echo "Runner IP: $(curl -s --max-time 10 https://api.ipify.org)"
           echo "FTP host:  $HOST -> $(getent ahostsv4 "$HOST" | awk 'NR==1{print $1}')"
           for port in 21 22; do
+            start=$(date +%s%N)
             if timeout 15 bash -c "</dev/tcp/$HOST/$port" 2>/dev/null; then
-              echo "TCP $port: OK"
+              echo "TCP $port: OK in $(( ($(date +%s%N) - start) / 1000000 )) ms"
             else
               echo "TCP $port: FAILED (timeout 15s)"
             fi
@@ -42,6 +43,10 @@ jobs:
 
       - name: Upload dist via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        env:
+          # Node 24 waits only 250 ms per address before falling back to IPv6,
+          # which is unreachable on GitHub runners -> sporadic ETIMEDOUT to Jino.
+          NODE_OPTIONS: --network-family-autoselection-attempt-timeout=5000 --dns-result-order=ipv4first
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
