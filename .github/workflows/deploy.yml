@@ -24,6 +24,22 @@ jobs:
 
       - run: npm run build
 
+      - name: Network diagnostics
+        continue-on-error: true
+        env:
+          HOST: ${{ secrets.FTP_SERVER }}
+        run: |
+          echo "UTC time:  $(date -u '+%Y-%m-%d %H:%M:%S')"
+          echo "Runner IP: $(curl -s --max-time 10 https://api.ipify.org)"
+          echo "FTP host:  $HOST -> $(getent ahostsv4 "$HOST" | awk 'NR==1{print $1}')"
+          for port in 21 22; do
+            if timeout 15 bash -c "</dev/tcp/$HOST/$port" 2>/dev/null; then
+              echo "TCP $port: OK"
+            else
+              echo "TCP $port: FAILED (timeout 15s)"
+            fi
+          done
+
       - name: Upload dist via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
