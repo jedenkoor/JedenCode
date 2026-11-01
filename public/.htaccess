@@ -1,3 +1,8 @@
+# Deny access to dotfiles (.ftp-deploy-sync-state.json, .envrc, ...)
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
 # SPA fallback for vue-router (createWebHistory)
 <IfModule mod_rewrite.c>
   RewriteEngine On

@@ -9,13 +9,9 @@ const routes: RouteRecordRaw[] = [
     component: MainPage
   },
   {
-    path: '/404',
+    path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: NotFoundPage
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404'
   }
 ]
 
