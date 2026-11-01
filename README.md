@@ -32,5 +32,19 @@ npm run type-check
 npm run lint
 ```
 
+### Deploys to hosting (jedenkoor.ru)
+Builds the project and uploads only changed files from `dist/` over FTPS.
+Credentials are read from `.env.deploy.local` (git-ignored):
+```
+FTP_SERVER=...
+FTP_USERNAME=...
+FTP_PASSWORD='...'
+FTP_SERVER_DIR=domains/jedenkoor.ru/
+```
+```
+npm run deploy
+npm run deploy -- --dry-run   # show changes without uploading
+```
+
 ### Customize configuration
 See [Vite Configuration Reference](https://vite.dev/config/).
