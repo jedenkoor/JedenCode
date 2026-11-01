@@ -2,12 +2,6 @@
   <ProjectsBlock />
 </template>
 
-<script>
-import ProjectsBlock from '@/components/Projects/ProjectsBlock'
-
-export default {
-  components: {
-    ProjectsBlock
-  }
-}
+<script setup lang="ts">
+import ProjectsBlock from '@/components/Projects/ProjectsBlock.vue'
 </script>

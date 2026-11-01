@@ -1,4 +1,6 @@
-export default [
+import type { Project } from '@/types/project'
+
+const projects: Project[] = [
   // {
   //   title: 'Internation',
   //   description: 'Спортивный бренд одежды',
@@ -200,3 +202,5 @@ export default [
     date: '2021.08.02'
   }
 ]
+
+export default projects

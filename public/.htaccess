@@ -1,0 +1,22 @@
+# SPA fallback for vue-router (createWebHistory)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Caching: hashed assets forever, index.html always revalidated
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  <If "%{REQUEST_URI} =~ m#^/assets/#">
+    ExpiresDefault "access plus 1 year"
+  </If>
+</IfModule>

@@ -2,18 +2,9 @@
   <div class="projects-filter__wrap">
     <div class="container projects-filter__container">
       <ul class="projects__filter projects-filter">
-        <li
-          class="projects-filter__item"
-          v-for="(item, index) in filtersList"
-          :key="index"
-        >
+        <li class="projects-filter__item" v-for="item in filtersList" :key="item">
           <label>
-            <input
-              class="visually-hidden"
-              type="checkbox"
-              v-model="filters"
-              :value="item"
-            />
+            <input class="visually-hidden" type="checkbox" v-model="filters" :value="item" />
             <span>{{ item }}</span>
           </label>
         </li>
@@ -27,67 +18,21 @@
           @click.prevent="toggleSort"
         >
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-            <path
-              d="M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z"
-            />
+            <path :d="icons[activeSortOption.direction]" />
           </svg>
-          По дате создания
+          {{ activeSortOption.label }}
         </button>
         <ul class="projects-filter-sort__list" :class="{ active: sortOpen }">
-          <li class="projects-filter-sort__item">
+          <li class="projects-filter-sort__item" v-for="option in sortOptions" :key="option.value">
             <button
               class="projects-filter-sort__itembtn"
-              data-value="dateAsc"
-              @click.prevent="changeSort"
+              :class="{ active: option.value === currentSort }"
+              @click.prevent="changeSort(option.value)"
             >
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                <path
-                  d="M3.5 0.5L3.85355 0.146447C3.65829 -0.0488155 3.34171 -0.0488155 3.14645 0.146447L3.5 0.5ZM3.14645 0.146447L0.146447 3.14645L0.853553 3.85355L3.85355 0.853553L3.14645 0.146447ZM3.14645 0.853553L6.14645 3.85355L6.85355 3.14645L3.85355 0.146447L3.14645 0.853553ZM3 0.5V15H4V0.5H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z"
-                />
+                <path :d="icons[option.direction]" />
               </svg>
-              По дате создания
-            </button>
-          </li>
-          <li class="projects-filter-sort__item">
-            <button
-              class="projects-filter-sort__itembtn active"
-              data-value="dateDesc"
-              @click.prevent="changeSort"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                <path
-                  d="M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z"
-                />
-              </svg>
-              По дате создания
-            </button>
-          </li>
-          <li class="projects-filter-sort__item">
-            <button
-              class="projects-filter-sort__itembtn"
-              data-value="alphabetAsc"
-              @click.prevent="changeSort"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                <path
-                  d="M3.5 0.5L3.85355 0.146447C3.65829 -0.0488155 3.34171 -0.0488155 3.14645 0.146447L3.5 0.5ZM3.14645 0.146447L0.146447 3.14645L0.853553 3.85355L3.85355 0.853553L3.14645 0.146447ZM3.14645 0.853553L6.14645 3.85355L6.85355 3.14645L3.85355 0.146447L3.14645 0.853553ZM3 0.5V15H4V0.5H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z"
-                />
-              </svg>
-              По алфавиту A-Z
-            </button>
-          </li>
-          <li class="projects-filter-sort__item">
-            <button
-              class="projects-filter-sort__itembtn"
-              data-value="alphabetDesc"
-              @click.prevent="changeSort"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                <path
-                  d="M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z"
-                />
-              </svg>
-              По алфавиту Z-A
+              {{ option.label }}
             </button>
           </li>
         </ul>
@@ -108,100 +53,77 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, ref, watchEffect } from 'vue'
 import projects from '@/data/projects'
+import vClickOutside from '@/directives/clickOutside'
+import type { Project } from '@/types/project'
 
-import ClickOutside from 'vue-click-outside'
+type SortDirection = 'asc' | 'desc'
+type SortValue = 'dateAsc' | 'dateDesc' | 'alphabetAsc' | 'alphabetDesc'
 
-export default {
-  props: ['filteredProjects'],
-  data() {
-    return {
-      currentSort: 'dateDesc',
-      sortOpen: false,
-      projects,
-      filters: []
-    }
+interface SortOption {
+  value: SortValue
+  label: string
+  direction: SortDirection
+  compare: (a: Project, b: Project) => number
+}
+
+const filteredProjects = defineModel<Project[]>('filteredProjects', { default: () => [] })
+
+const icons: Record<SortDirection, string> = {
+  asc: 'M3.5 0.5L3.85355 0.146447C3.65829 -0.0488155 3.34171 -0.0488155 3.14645 0.146447L3.5 0.5ZM3.14645 0.146447L0.146447 3.14645L0.853553 3.85355L3.85355 0.853553L3.14645 0.146447ZM3.14645 0.853553L6.14645 3.85355L6.85355 3.14645L3.85355 0.146447L3.14645 0.853553ZM3 0.5V15H4V0.5H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z',
+  desc: 'M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z'
+}
+
+const byTitle = (a: Project, b: Project): number => a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+
+const sortOptions: SortOption[] = [
+  {
+    value: 'dateAsc',
+    label: 'По дате создания',
+    direction: 'asc',
+    compare: (a, b) => Date.parse(a.date) - Date.parse(b.date)
   },
-  computed: {
-    filtersList() {
-      const filteredFilters = []
-      this.projects.forEach(project => {
-        filteredFilters.push(...project.tags)
-      })
-      return filteredFilters
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .sort()
-    }
+  {
+    value: 'dateDesc',
+    label: 'По дате создания',
+    direction: 'desc',
+    compare: (a, b) => Date.parse(b.date) - Date.parse(a.date)
   },
-  methods: {
-    updateprojects(currentSort) {
-      let projectsList = this.projects
-      if (this.filters.length) {
-        projectsList = this.projects.filter(project =>
-          this.filters.some(tag => project.tags.includes(tag))
-        )
-      }
-      this.$emit(
-        'update:filteredProjects',
-        this.$options.filters.sort(projectsList, currentSort)
-      )
-    },
-    resetFilter() {
-      this.filters = []
-    },
-    toggleSort() {
-      this.sortOpen = !this.sortOpen
-    },
-    hideSort() {
-      this.sortOpen = false
-    },
-    changeSort(e) {
-      this.currentSort = e.target.dataset.value
-      document.querySelector('.projects-filter-sort__btn').innerHTML = e.target.innerHTML
-      document.querySelectorAll('.projects-filter-sort__itembtn').forEach(item => {
-        item.classList.remove('active')
-      })
-      e.target.classList.add('active')
-      this.toggleSort()
-    }
-  },
-  created() {
-    this.updateprojects(this.currentSort)
-  },
-  watch: {
-    filters() {
-      this.updateprojects(this.currentSort)
-    },
-    currentSort() {
-      this.updateprojects(this.currentSort)
-    }
-  },
-  filters: {
-    sort(projects, currentSort) {
-      switch (currentSort) {
-        case 'dateAsc':
-          projects = projects.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
-          break
-        case 'dateDesc':
-          projects = projects.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
-          break
-        case 'alphabetAsc':
-          projects = projects.sort((a, b) => {
-            if (a.title.toLowerCase() < b.title.toLowerCase()) return -1
-          })
-          break
-        case 'alphabetDesc':
-          projects = projects.sort((a, b) => {
-            if (a.title.toLowerCase() > b.title.toLowerCase()) return -1
-          })
-          break
-      }
-      return projects
-    }
-  },
-  directives: {
-    ClickOutside
-  }
+  { value: 'alphabetAsc', label: 'По алфавиту A-Z', direction: 'asc', compare: byTitle },
+  { value: 'alphabetDesc', label: 'По алфавиту Z-A', direction: 'desc', compare: (a, b) => byTitle(b, a) }
+]
+
+const currentSort = ref<SortValue>('dateDesc')
+const sortOpen = ref(false)
+const filters = ref<string[]>([])
+
+const activeSortOption = computed(() => sortOptions.find(option => option.value === currentSort.value) ?? sortOptions[0]!)
+
+const filtersList = computed(() => [...new Set(projects.flatMap(project => project.tags))].sort())
+
+watchEffect(() => {
+  const projectsList = filters.value.length
+    ? projects.filter(project => filters.value.some(tag => project.tags.includes(tag)))
+    : [...projects]
+  filteredProjects.value = projectsList.sort(activeSortOption.value.compare)
+})
+
+function resetFilter() {
+  filters.value = []
+}
+
+function toggleSort() {
+  sortOpen.value = !sortOpen.value
+}
+
+function hideSort() {
+  sortOpen.value = false
+}
+
+function changeSort(value: SortValue) {
+  currentSort.value = value
+  hideSort()
 }
 </script>

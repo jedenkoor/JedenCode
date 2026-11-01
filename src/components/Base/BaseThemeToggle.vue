@@ -11,23 +11,19 @@
   </button>
 </template>
 
-<script>
-export default {
-  methods: {
-    changeTheme() {
-      const htmlClassList = document.querySelector('html').classList
-      htmlClassList.toggle('light-theme')
-      if (htmlClassList.contains('light-theme')) {
-        localStorage.setItem('theme', 'light')
-      } else {
-        localStorage.removeItem('theme')
-      }
-    }
-  },
-  created() {
-    if (localStorage.getItem('theme') === 'light') {
-      document.querySelector('html').classList.add('light-theme')
-    }
+<script setup lang="ts">
+const htmlClassList = document.documentElement.classList
+
+if (localStorage.getItem('theme') === 'light') {
+  htmlClassList.add('light-theme')
+}
+
+function changeTheme() {
+  htmlClassList.toggle('light-theme')
+  if (htmlClassList.contains('light-theme')) {
+    localStorage.setItem('theme', 'light')
+  } else {
+    localStorage.removeItem('theme')
   }
 }
 </script>

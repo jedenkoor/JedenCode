@@ -41,12 +41,6 @@
   </header>
 </template>
 
-<script>
-import BaseThemeToggle from '@/components/Base/BaseThemeToggle'
-
-export default {
-  components: {
-    BaseThemeToggle
-  }
-}
+<script setup lang="ts">
+import BaseThemeToggle from '@/components/Base/BaseThemeToggle.vue'
 </script>

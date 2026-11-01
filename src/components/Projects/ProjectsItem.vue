@@ -6,7 +6,7 @@
       </div>
       <div class="projects-item__top">
         <h3 class="projects-item__title">{{ project.title }}</h3>
-        <div class="projects-item__date">{{ project.date | dates }}</div>
+        <div class="projects-item__date">{{ formatDate(project.date) }}</div>
       </div>
       <p class="projects-item__descr">{{ project.description }}</p>
       <ul class="projects-item__tags">
@@ -18,16 +18,13 @@
   </li>
 </template>
 
-<script>
-export default {
-  props: ['project'],
-  filters: {
-    dates(date) {
-      return date
-        .split('.')
-        .reverse()
-        .join('.')
-    }
-  }
-}
+<script setup lang="ts">
+import type { Project } from '@/types/project'
+
+defineProps<{
+  project: Project
+}>()
+
+// 2019.03.25 -> 25.03.2019
+const formatDate = (date: string): string => date.split('.').reverse().join('.')
 </script>

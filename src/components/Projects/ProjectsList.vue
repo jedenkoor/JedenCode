@@ -1,22 +1,16 @@
 <template>
   <div class="container">
     <ul class="projects__list">
-      <ProjectsItem
-        v-for="(project, index) in filteredProjects"
-        :key="index"
-        :project="project"
-      />
+      <ProjectsItem v-for="project in filteredProjects" :key="project.link" :project="project" />
     </ul>
   </div>
 </template>
 
-<script>
-import ProjectsItem from '@/components/Projects/ProjectsItem'
+<script setup lang="ts">
+import ProjectsItem from '@/components/Projects/ProjectsItem.vue'
+import type { Project } from '@/types/project'
 
-export default {
-  props: ['filteredProjects'],
-  components: {
-    ProjectsItem
-  }
-}
+defineProps<{
+  filteredProjects: Project[]
+}>()
 </script>
