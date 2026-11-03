@@ -1,0 +1,19 @@
+:root {
+  --main-bg: #222222;
+  --secondary-bg: #2c2c33;
+  --projects-bg: #ebeaec;
+  --main-text: #fff;
+  --accent: #7aedf5;
+  --accent-logo: #50a5ab;
+  --toggle-color-secondary: #eec413;
+}
+
+.light-theme {
+  --main-bg: #f3f3f3;
+  --secondary-bg: #fff;
+  --projects-bg: #f3f3f3;
+  --main-text: #222222;
+  --accent: #2bc9d4;
+  --accent-logo: #2bc9d4;
+  --toggle-color-secondary: #fe7765;
+}

@@ -2,6 +2,29 @@
 
 Vue 3 + TypeScript + Vue Router + Vite.
 
+## Structure
+[Feature-Sliced Design](https://feature-sliced.design/). Layers import only from layers below them,
+and other slices are imported only through their public API (`index.ts`):
+```
+src/
+  app/        entry point, App.vue, router, global styles (reset, fonts, theme variables, utilities)
+  pages/      main, not-found
+  widgets/    header, footer, projects (projects block + list)
+  features/   theme-toggle, projects-filter
+  entities/   project (type, data, ProjectCard)
+  shared/     ui/logo, lib/directives
+```
+
+## Styles
+- Plain CSS, no preprocessors. Styles live in the component's `<style scoped>`.
+- Flat BEM selectors. Nesting is used only for `:hover`/`:focus` and modifiers (`&.active`).
+  Media queries go at the end of the style block.
+- A component with more than 200 lines of styles gets its own folder:
+  `Component.vue` + `Component.css` (`<style scoped src="./Component.css">`) + `index.ts`,
+  and the folder exports only the Vue component.
+- Global styles are only in `src/app/styles/`: reset, fonts, theme variables, base tags,
+  `.container` and `.visually-hidden`.
+
 ## Project setup
 ```
 npm install
