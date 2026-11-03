@@ -1,0 +1,74 @@
+name: FTP upload attempt
+
+# One upload attempt on a fresh runner. Called up to 3 times by deploy.yml.
+# Some GitHub runner IPs can't open TCP to Jino at all (network path issue,
+# confirmed by Jino support: no filtering on their side). A new job gets a new
+# VM and usually a new IP, so retrying in a separate job works around it.
+#
+# The job never fails by itself: it reports `deployed` and deploy.yml decides.
+
+on:
+  workflow_call:
+    inputs:
+      attempt:
+        type: number
+        required: true
+    outputs:
+      deployed:
+        description: "'true' if the upload succeeded"
+        value: ${{ jobs.upload.outputs.deployed }}
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    outputs:
+      deployed: ${{ steps.result.outputs.deployed }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - name: Check FTP reachability
+        id: probe
+        env:
+          HOST: ${{ secrets.FTP_SERVER }}
+        run: |
+          echo "Attempt:   ${{ inputs.attempt }}"
+          echo "UTC time:  $(date -u '+%Y-%m-%d %H:%M:%S')"
+          echo "Runner IP: $(curl -s --max-time 10 https://api.ipify.org)"
+          echo "FTP host:  $HOST -> $(getent ahostsv4 "$HOST" | awk 'NR==1{print $1}')"
+          start=$(date +%s%N)
+          if timeout 10 bash -c "</dev/tcp/$HOST/21" 2>/dev/null; then
+            echo "TCP 21: OK in $(( ($(date +%s%N) - start) / 1000000 )) ms"
+            echo "reachable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Attempt ${{ inputs.attempt }}: TCP 21 unreachable from this runner, skipping upload"
+            echo "reachable=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload dist via FTPS
+        id: upload
+        if: steps.probe.outputs.reachable == 'true'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        env:
+          # Node 24 waits only 250 ms per address before falling back to IPv6,
+          # which is unreachable on GitHub runners -> sporadic ETIMEDOUT to Jino.
+          NODE_OPTIONS: --network-family-autoselection-attempt-timeout=5000 --dns-result-order=ipv4first
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+
+      - name: Report result
+        id: result
+        run: |
+          if [ "${{ steps.upload.outcome }}" = "success" ]; then
+            echo "deployed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+          fi

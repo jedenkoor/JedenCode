@@ -1,16 +1,20 @@
 name: Deploy
 
-# Manual only: GitHub runners sometimes can't reach Jino FTP.
-# Regular deploys are done locally with `npm run deploy`.
+# Build once, then upload to Jino with up to 3 attempts, each on a fresh runner
+# (see ftp-upload.yml for why). Local fallback: `npm run deploy`.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
+# Queue deploys instead of cancelling: an interrupted FTP upload can leave
+# the server's .ftp-deploy-sync-state.json out of sync with the files.
 concurrency:
   group: deploy
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -22,34 +26,58 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
       - run: npm run build
 
-      - name: Network diagnostics
-        continue-on-error: true
-        env:
-          HOST: ${{ secrets.FTP_SERVER }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          include-hidden-files: true # keep .htaccess
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy-1:
+    needs: build
+    uses: ./.github/workflows/ftp-upload.yml
+    with:
+      attempt: 1
+    secrets: inherit
+
+  deploy-2:
+    needs: [build, deploy-1]
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' }}
+    uses: ./.github/workflows/ftp-upload.yml
+    with:
+      attempt: 2
+    secrets: inherit
+
+  deploy-3:
+    needs: [build, deploy-2]
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-2.outputs.deployed != 'true' }}
+    uses: ./.github/workflows/ftp-upload.yml
+    with:
+      attempt: 3
+    secrets: inherit
+
+  result:
+    needs: [build, deploy-1, deploy-2, deploy-3]
+    if: ${{ always() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that one attempt deployed
         run: |
-          echo "UTC time:  $(date -u '+%Y-%m-%d %H:%M:%S')"
-          echo "Runner IP: $(curl -s --max-time 10 https://api.ipify.org)"
-          echo "FTP host:  $HOST -> $(getent ahostsv4 "$HOST" | awk 'NR==1{print $1}')"
-          for port in 21 22; do
-            start=$(date +%s%N)
-            if timeout 15 bash -c "</dev/tcp/$HOST/$port" 2>/dev/null; then
-              echo "TCP $port: OK in $(( ($(date +%s%N) - start) / 1000000 )) ms"
-            else
-              echo "TCP $port: FAILED (timeout 15s)"
+          for attempt in 1 2 3; do
+            case $attempt in
+              1) deployed='${{ needs.deploy-1.outputs.deployed }}' ;;
+              2) deployed='${{ needs.deploy-2.outputs.deployed }}' ;;
+              3) deployed='${{ needs.deploy-3.outputs.deployed }}' ;;
+            esac
+            if [ "$deployed" = "true" ]; then
+              echo "Deployed on attempt $attempt" | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 0
             fi
           done
-
-      - name: Upload dist via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        env:
-          # Node 24 waits only 250 ms per address before falling back to IPv6,
-          # which is unreachable on GitHub runners -> sporadic ETIMEDOUT to Jino.
-          NODE_OPTIONS: --network-family-autoselection-attempt-timeout=5000 --dns-result-order=ipv4first
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          echo "::error::All 3 upload attempts failed. Deploy locally: npm run deploy"
+          exit 1

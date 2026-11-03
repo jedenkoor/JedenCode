@@ -33,7 +33,13 @@ npm run lint
 ```
 
 ### Deploys to hosting (jedenkoor.ru)
-Builds the project and uploads only changed files from `dist/` over FTPS.
+Every push to `main` deploys automatically via GitHub Actions (`.github/workflows/deploy.yml`):
+lint + build, then up to 3 FTPS upload attempts, each on a fresh runner, because some runner IPs
+can't reach the hosting. Credentials are in the repository secrets
+`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`.
+
+Manual / fallback deploy from your machine builds the project and uploads only changed files
+from `dist/` over FTPS. It shares the sync state on the server with CI, so both can be mixed.
 Credentials are read from `.env.deploy.local` (git-ignored):
 ```
 FTP_SERVER=...
