@@ -8,13 +8,17 @@
 </template>
 
 <script setup lang="ts">
-const htmlClassList = document.documentElement.classList
+import { onMounted } from 'vue'
 
-if (localStorage.getItem('theme') === 'light') {
-  htmlClassList.add('light-theme')
-}
+// document/localStorage exist only in the browser, not during server rendering
+onMounted(() => {
+  if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light-theme')
+  }
+})
 
 function changeTheme() {
+  const htmlClassList = document.documentElement.classList
   htmlClassList.toggle('light-theme')
   if (htmlClassList.contains('light-theme')) {
     localStorage.setItem('theme', 'light')

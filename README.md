@@ -1,19 +1,22 @@
 # jedencode
 
-Vue 3 + TypeScript + Vue Router + Vite.
+Nuxt 4 (static generation) + Vue 3 + TypeScript.
 
 ## Structure
 [Feature-Sliced Design](https://feature-sliced.design/). Layers import only from layers below them,
 and other slices are imported only through their public API (`index.ts`):
 ```
 src/
-  app/        entry point, App.vue, router, global styles (reset, fonts, theme variables, utilities)
+  app/        Nuxt srcDir: App.vue, routes/ (file-based routing), global styles (reset, fonts, theme, utilities)
   pages/      main, not-found
   widgets/    header, footer, projects (projects block + list)
   features/   theme-toggle, projects-filter
   entities/   project (type, data, ProjectCard)
   shared/     ui/logo, lib/directives
 ```
+Nuxt specifics (`nuxt.config.ts`): `srcDir` is `src/app`, file-based routes live in `src/app/routes/`
+as thin wrappers around the FSD `pages` layer, `@/` points to `src/`, and auto-imports of components
+and composables are disabled: everything is imported explicitly through public APIs.
 
 ## Styles
 - Plain CSS, no preprocessors. Styles live in the component's `<style scoped>`.
@@ -35,7 +38,7 @@ npm install
 npm run dev
 ```
 
-### Compiles and minifies for production
+### Type-checks and generates the static site into `.output/public/`
 ```
 npm run build
 ```
@@ -62,7 +65,7 @@ can't reach the hosting. Credentials are in the repository secrets
 `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`.
 
 Manual / fallback deploy from your machine builds the project and uploads only changed files
-from `dist/` over FTPS. It shares the sync state on the server with CI, so both can be mixed.
+from `.output/public/` over FTPS. It shares the sync state on the server with CI, so both can be mixed.
 Credentials are read from `.env.deploy.local` (git-ignored):
 ```
 FTP_SERVER=...

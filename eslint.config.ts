@@ -3,7 +3,7 @@ import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescri
 import globals from 'globals'
 
 export default defineConfigWithVueTs(
-  { ignores: ['dist/**'] },
+  { ignores: ['dist/**', '.nuxt/**', '.output/**', '.data/**'] },
   { files: ['*.config.ts'], languageOptions: { globals: { ...globals.node } } },
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,

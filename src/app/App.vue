@@ -4,7 +4,7 @@
 
     <main class="content">
       <h1 class="visually-hidden">Личный сайт веб-разработчика JedenCode</h1>
-      <router-view />
+      <NuxtPage />
     </main>
 
     <TheFooter />
@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtPage } from '#components'
 import { TheHeader } from '@/widgets/header'
 import { TheFooter } from '@/widgets/footer'
 </script>

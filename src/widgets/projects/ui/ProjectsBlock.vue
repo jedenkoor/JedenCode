@@ -4,19 +4,18 @@
       <h2 class="projects__title">Проекты</h2>
     </div>
 
-    <ProjectsFilter v-model:filteredProjects="filteredProjects" />
+    <ProjectsFilter v-model:filters="filters" v-model:sort="sort" :tags="tags" />
 
     <ProjectsList :filteredProjects="filteredProjects" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ProjectsFilter } from '@/features/projects-filter'
-import type { Project } from '@/entities/project'
+import { ProjectsFilter, useProjectsFilter } from '@/features/projects-filter'
+import { projects } from '@/entities/project'
 import ProjectsList from './ProjectsList.vue'
 
-const filteredProjects = ref<Project[]>([])
+const { filters, sort, tags, filteredProjects } = useProjectsFilter(projects)
 </script>
 
 <style scoped>

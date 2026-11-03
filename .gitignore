@@ -26,3 +26,8 @@ dist
 
 # local planning notes
 docs/ROADMAP.md
+
+# Nuxt
+.nuxt
+.output
+.data

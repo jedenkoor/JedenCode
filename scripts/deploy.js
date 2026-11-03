@@ -1,4 +1,4 @@
-// Uploads ./dist to the hosting over FTP.
+// Uploads ./.output/public (nuxt generate) to the hosting over FTP.
 // Only changed files are transferred: the state of the last deploy is kept
 // on the server in .ftp-deploy-sync-state.json (same format as FTP-Deploy-Action).
 //
@@ -21,8 +21,8 @@ if (missing.length) {
   process.exit(1)
 }
 
-if (!existsSync('dist/index.html')) {
-  console.error('dist/ is empty — run "npm run build" first')
+if (!existsSync('.output/public/index.html')) {
+  console.error('.output/public/ is empty — run "npm run build" first')
   process.exit(1)
 }
 
@@ -32,7 +32,7 @@ try {
     username: process.env.FTP_USERNAME,
     password: process.env.FTP_PASSWORD,
     protocol: 'ftps',
-    'local-dir': './dist/',
+    'local-dir': './.output/public/',
     'server-dir': process.env.FTP_SERVER_DIR,
     'dry-run': process.argv.includes('--dry-run'),
     'log-level': 'standard'

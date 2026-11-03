@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: dist
-          path: dist/
+          path: .output/public/
           include-hidden-files: true # keep .htaccess
           if-no-files-found: error
           retention-days: 1

@@ -3,17 +3,11 @@
   Require all denied
 </FilesMatch>
 
-# SPA fallback for vue-router (createWebHistory)
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
+# Pages are pre-rendered by `nuxt generate` (/index.html, /some/page/index.html).
+# Unknown URLs get a real 404 status; 404.html boots the app, which shows the not-found page.
+ErrorDocument 404 /404.html
 
-# Caching: hashed assets forever, index.html always revalidated
+# Caching: hashed assets forever, HTML always revalidated
 <IfModule mod_headers.c>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache"
@@ -21,7 +15,7 @@
 </IfModule>
 <IfModule mod_expires.c>
   ExpiresActive On
-  <If "%{REQUEST_URI} =~ m#^/assets/#">
+  <If "%{REQUEST_URI} =~ m#^/_nuxt/#">
     ExpiresDefault "access plus 1 year"
   </If>
 </IfModule>
