@@ -27,6 +27,9 @@ dist
 # local planning notes
 docs/ROADMAP.md
 
+# PageSpeed baselines and measurements (local only)
+docs/pagespeed/
+
 # agent rules
 AGENTS.md
 
