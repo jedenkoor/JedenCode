@@ -47,6 +47,8 @@
 .projects-filter__input:focus + .projects-filter__text,
 .projects-filter__input:checked + .projects-filter__text {
   color: var(--accent, #7aedf5);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .projects-filter__clear {

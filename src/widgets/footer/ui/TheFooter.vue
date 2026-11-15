@@ -2,13 +2,18 @@
   <footer class="the-footer">
     <div class="container the-footer__container">
       <AppLogo :to="{ name: 'main' }" />
-      <span class="the-footer__copyright">JedenCode © 2021</span>
+      <span class="the-footer__copyright">JedenCode © {{ copyrightYear }}</span>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
 import { AppLogo } from '@/shared/ui/logo'
+
+defineProps<{
+  /** Год берётся из app-конфига: статическая сборка фиксирует его на момент генерации */
+  copyrightYear: number
+}>()
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="projects-filter">
-    <div class="container projects-filter__container">
-      <ul class="projects-filter__list">
+    <div class="container projects-filter__container" @keydown.esc="handleSortEscape">
+      <ul class="projects-filter__list" aria-label="Фильтр проектов по тегам">
         <li class="projects-filter__item" v-for="item in tags" :key="item">
           <label class="projects-filter__label">
             <input class="visually-hidden projects-filter__input" type="checkbox" v-model="filters" :value="item" />
@@ -12,24 +12,29 @@
 
       <div class="projects-filter__sort projects-filter-sort" v-click-outside="hideSort">
         <button
+          ref="sortButtonEl"
+          type="button"
           class="projects-filter-sort__btn"
-          aria-label="Сортировка"
+          :aria-label="`Сортировка: ${activeSortOption.label}`"
+          aria-controls="projects-filter-sort-list"
+          :aria-expanded="sortOpen"
           :class="{ 'm-active': sortOpen }"
-          @click.prevent="toggleSort"
+          @click="toggleSort"
         >
-          <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
             <path :d="icons[activeSortOption.direction]" />
           </svg>
           {{ activeSortOption.label }}
         </button>
-        <ul class="projects-filter-sort__list" :class="{ 'm-active': sortOpen }">
+        <ul id="projects-filter-sort-list" class="projects-filter-sort__list" :class="{ 'm-active': sortOpen }">
           <li class="projects-filter-sort__item" v-for="option in sortOptions" :key="option.value">
             <button
+              type="button"
               class="projects-filter-sort__itembtn"
               :class="{ 'm-active': option.value === sort }"
-              @click.prevent="changeSort(option.value)"
+              @click="changeSort(option.value)"
             >
-              <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
                 <path :d="icons[option.direction]" />
               </svg>
               {{ option.label }}
@@ -39,12 +44,13 @@
       </div>
 
       <button
+        v-if="filters.length"
+        type="button"
         class="projects-filter__clear"
         aria-label="Сбросить фильтр"
-        v-if="filters.length"
-        @click.prevent="resetFilter"
+        @click="resetFilter"
       >
-        <svg class="projects-filter__clear-icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <svg class="projects-filter__clear-icon" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path d="M2 2L13 13M2 13L13 2" />
         </svg>
         Сбросить фильтр
@@ -54,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { vClickOutside } from '@/shared/utils/directives'
 import { findSortOption, sortOptions, type SortDirection, type SortOption, type SortValue } from '../../model/sort'
 
@@ -70,7 +76,8 @@ const icons: Record<SortDirection, string> = {
   desc: 'M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z'
 }
 
-const sortOpen = ref(false)
+const sortOpen = ref<boolean>(false)
+const sortButtonEl = useTemplateRef<HTMLButtonElement>('sortButtonEl')
 
 const activeSortOption = computed<SortOption>(() => findSortOption(sort.value))
 
@@ -84,6 +91,13 @@ function toggleSort() {
 
 function hideSort() {
   sortOpen.value = false
+}
+
+/** Escape закрывает меню и возвращает фокус на кнопку сортировки */
+function handleSortEscape() {
+  if (!sortOpen.value) return
+  hideSort()
+  sortButtonEl.value?.focus()
 }
 
 function changeSort(value: SortValue) {

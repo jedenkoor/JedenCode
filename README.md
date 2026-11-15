@@ -12,7 +12,7 @@ src/
   widgets/    header, footer, projects (projects block + list)
   features/   theme-toggle, projects-filter
   entities/   project (type, data, ProjectCard)
-  shared/     ui/logo, lib/directives
+  shared/     ui/logo, utils/directives, constants
 ```
 Nuxt specifics (`nuxt.config.ts`): `srcDir` is `src/app`, file-based routes live in `src/app/routes/`
 as thin wrappers around the FSD `pages` layer, `@/` points to `src/`, and auto-imports of components
@@ -26,7 +26,10 @@ and composables are disabled: everything is imported explicitly through public A
   `Component.vue` + `Component.css` (`<style scoped src="./Component.css">`) + `index.ts`,
   and the folder exports only the Vue component.
 - Global styles are only in `src/app/styles/`: reset, fonts, theme variables, base tags,
-  `.container` and `.visually-hidden`.
+  `.container` and `.visually-hidden`. Font files live in `public/fonts/`, so their URLs are stable
+  and can be preloaded from `nuxt.config.ts`.
+- The theme is applied by an inline script in `<head>` (`src/app/config/theme.ts`) before the first
+  paint: no flash of the dark theme, system preference respected, choice stored in `localStorage`.
 
 ## Project setup
 ```

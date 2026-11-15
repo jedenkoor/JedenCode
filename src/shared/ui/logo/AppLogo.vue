@@ -1,5 +1,5 @@
 <template>
-  <RouterLink class="app-logo" :to="to">
+  <RouterLink class="app-logo" :to="to" aria-label="JedenCode — на главную">
     <svg class="app-logo__svg" xmlns="http://www.w3.org/2000/svg" width="752" height="176" viewBox="0 0 752 176" fill="none">
       <path class="app-logo__bg" d="M748 172.5V3.5H3.5V172L748 172.5Z" fill="white" />
       <path

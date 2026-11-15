@@ -7,14 +7,26 @@
       <NuxtPage />
     </main>
 
-    <TheFooter />
+    <TheFooter :copyright-year="SITE_COPYRIGHT_YEAR" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useHead } from '#imports'
 import { NuxtPage } from '#components'
 import { TheHeader } from '@/widgets/header'
 import { TheFooter } from '@/widgets/footer'
+import { SITE_COPYRIGHT_YEAR } from './config/site'
+import { buildSiteJsonLd } from './config/seo'
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(buildSiteJsonLd())
+    }
+  ]
+})
 </script>
 
 <style scoped>

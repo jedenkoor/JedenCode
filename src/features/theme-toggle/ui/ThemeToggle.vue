@@ -1,31 +1,22 @@
 <template>
-  <button class="theme-toggle" @click.prevent="changeTheme">
-    <span class="theme-toggle__moon"></span>
-    <span class="theme-toggle__sun"></span>
+  <button
+    class="theme-toggle"
+    type="button"
+    aria-label="Светлая тема"
+    :aria-pressed="isLightTheme"
+    @click="toggleTheme"
+  >
+    <span class="theme-toggle__moon" aria-hidden="true"></span>
+    <span class="theme-toggle__sun" aria-hidden="true"></span>
     <!-- Ray N is rotated by N * 30deg; numbering starts at 3 as in the original nth-child layout -->
-    <small v-for="ray in 6" :key="ray" class="theme-toggle__ray" :style="{ '--ray': ray + 2 }"></small>
+    <small v-for="ray in 6" :key="ray" class="theme-toggle__ray" aria-hidden="true" :style="{ '--ray': ray + 2 }"></small>
   </button>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useTheme } from '../model/useTheme'
 
-// document/localStorage exist only in the browser, not during server rendering
-onMounted(() => {
-  if (localStorage.getItem('theme') === 'light') {
-    document.documentElement.classList.add('light-theme')
-  }
-})
-
-function changeTheme() {
-  const htmlClassList = document.documentElement.classList
-  htmlClassList.toggle('light-theme')
-  if (htmlClassList.contains('light-theme')) {
-    localStorage.setItem('theme', 'light')
-  } else {
-    localStorage.removeItem('theme')
-  }
-}
+const { isLightTheme, toggleTheme } = useTheme()
 </script>
 
 <style scoped>

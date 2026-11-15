@@ -1,13 +1,24 @@
 <template>
   <li class="project-card">
-    <a :href="project.link" class="project-card__link" target="_blank">
+    <a :href="project.link" class="project-card__link" target="_blank" rel="noopener noreferrer">
       <div class="project-card__logo">
-        <img :src="project.image" :alt="project.title" class="project-card__img" />
+        <!-- Логотип декоративный: название проекта уже озвучено заголовком ниже -->
+        <img
+          :src="project.image"
+          alt=""
+          width="300"
+          height="200"
+          decoding="async"
+          :loading="isPriority ? 'eager' : 'lazy'"
+          :fetchpriority="isPriority ? 'high' : 'auto'"
+          class="project-card__img"
+        />
       </div>
       <div class="project-card__top">
         <h3 class="project-card__title">{{ project.title }}</h3>
         <div class="project-card__date">{{ formatDate(project.date) }}</div>
       </div>
+      <span class="visually-hidden">Откроется в новой вкладке</span>
       <p class="project-card__descr">{{ project.description }}</p>
       <ul class="project-card__tags">
         <li class="project-card__tag" v-for="tag in project.tags" :key="tag">
@@ -20,13 +31,16 @@
 
 <script setup lang="ts">
 import type { Project } from '../model/types'
+import { formatDate } from '../utils/formatDate'
 
-defineProps<{
-  project: Project
-}>()
-
-// 2019.03.25 -> 25.03.2019
-const formatDate = (date: string): string => date.split('.').reverse().join('.')
+withDefaults(
+  defineProps<{
+    project: Project
+    /** Первые карточки грузятся сразу, остальные — лениво */
+    isPriority?: boolean
+  }>(),
+  { isPriority: false }
+)
 </script>
 
 <style scoped>
