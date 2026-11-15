@@ -1,7 +1,7 @@
 <template>
-  <ProjectsBlock />
+  <ProfileBlock />
 </template>
 
 <script setup lang="ts">
-import { ProjectsBlock } from '@/widgets/projects'
+import { ProfileBlock } from '@/widgets/profile'
 </script>
