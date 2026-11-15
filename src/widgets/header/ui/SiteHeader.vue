@@ -1,7 +1,7 @@
 <template>
-  <header class="the-header">
-    <div class="container the-header__container">
-      <AppLogo :to="{ name: 'main' }" />
+  <header class="site-header">
+    <div class="container site-header__container">
+      <SiteLogo :to="{ name: 'main' }" />
       <ThemeToggle />
     </div>
   </header>
@@ -9,22 +9,22 @@
 
 <script setup lang="ts">
 import { ThemeToggle } from '@/features/theme-toggle'
-import { AppLogo } from '@/shared/ui/logo'
+import { SiteLogo } from '@/shared/ui/logo'
 </script>
 
 <style scoped>
-.the-header {
+.site-header {
   padding: 40px 0;
 }
 
-.the-header__container {
+.site-header__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 @media screen and (max-width: 767px) {
-  .the-header {
+  .site-header {
     padding: 20px 0;
   }
 }

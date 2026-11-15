@@ -1,22 +1,21 @@
 <template>
   <div class="app-wrapper">
-    <TheHeader />
+    <SiteHeader />
 
     <main class="app-content">
       <h1 class="visually-hidden">Личный сайт веб-разработчика JedenCode</h1>
       <NuxtPage />
     </main>
 
-    <TheFooter :copyright-year="SITE_COPYRIGHT_YEAR" />
+    <SiteFooter />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useHead } from '#imports'
 import { NuxtPage } from '#components'
-import { TheHeader } from '@/widgets/header'
-import { TheFooter } from '@/widgets/footer'
-import { SITE_COPYRIGHT_YEAR } from './config/site'
+import { SiteHeader } from '@/widgets/header'
+import { SiteFooter } from '@/widgets/footer'
 import { buildSiteJsonLd } from './config/seo'
 
 useHead({
