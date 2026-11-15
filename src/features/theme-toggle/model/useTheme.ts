@@ -31,6 +31,8 @@ export function useTheme() {
   if (import.meta.client && !isThemeSynced) {
     isThemeSynced = true
     isLightTheme.value = document.documentElement.classList.contains(THEME_LIGHT_CLASS)
+    // Синхронизирует theme-color с фактической темой: инлайн-скрипт её только применяет
+    applyTheme(isLightTheme.value)
   }
 
   const toggleTheme = (): void => {
