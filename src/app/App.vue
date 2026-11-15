@@ -1,8 +1,8 @@
 <template>
-  <div class="wrapper">
+  <div class="app-wrapper">
     <TheHeader />
 
-    <main class="content">
+    <main class="app-content">
       <h1 class="visually-hidden">Личный сайт веб-разработчика JedenCode</h1>
       <NuxtPage />
     </main>
@@ -18,14 +18,14 @@ import { TheFooter } from '@/widgets/footer'
 </script>
 
 <style scoped>
-.wrapper {
+.app-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 100vh;
 }
 
-.content {
+.app-content {
   flex: 1;
 }
 </style>

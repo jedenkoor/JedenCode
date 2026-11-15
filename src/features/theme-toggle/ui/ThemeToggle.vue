@@ -43,15 +43,15 @@ function changeTheme() {
 
   &:hover .theme-toggle__ray,
   &:focus .theme-toggle__ray {
-    transform: rotate(calc(var(--ray) * 30deg - 20deg));
+    transform: rotate(calc(var(--ray, 0) * 30deg - 20deg));
   }
 }
 
 .theme-toggle__sun {
   width: 34px;
   height: 34px;
-  background: var(--toggle-color-secondary);
-  border: 4px solid var(--main-bg);
+  background: var(--toggle-color-secondary, #eec413);
+  border: 4px solid var(--main-bg, #222222);
   border-radius: 50%;
 }
 
@@ -61,8 +61,8 @@ function changeTheme() {
   display: block;
   width: 2px;
   height: 121%;
-  background: var(--toggle-color-secondary);
-  transform: rotate(calc(var(--ray) * 30deg));
+  background: var(--toggle-color-secondary, #eec413);
+  transform: rotate(calc(var(--ray, 0) * 30deg));
   transition: 0.4s all, height 0.3s ease-in-out;
 }
 
@@ -73,7 +73,7 @@ function changeTheme() {
   z-index: 9;
   width: 28px;
   height: 28px;
-  background: var(--main-bg);
+  background: var(--main-bg, #222222);
   border-radius: 50%;
   transform: scale(0) translate(25%, -25%);
   transform-origin: right;
@@ -83,7 +83,7 @@ function changeTheme() {
 /* Light theme: .light-theme is set on <html> */
 
 .light-theme .theme-toggle {
-  background-color: var(--main-bg);
+  background-color: var(--main-bg, #222222);
 }
 
 .light-theme .theme-toggle__moon {
@@ -97,7 +97,7 @@ function changeTheme() {
 
 .light-theme .theme-toggle .theme-toggle__ray {
   height: 0;
-  transform: rotate(calc(var(--ray) * 30deg - 45deg));
+  transform: rotate(calc(var(--ray, 0) * 30deg - 45deg));
   transition: 0.4s, transform 0.4s, height 0.2s 0.1s;
 }
 </style>

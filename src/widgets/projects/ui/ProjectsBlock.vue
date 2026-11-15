@@ -1,7 +1,7 @@
 <template>
-  <section class="projects">
+  <section class="projects-block">
     <div class="container">
-      <h2 class="projects__title">Проекты</h2>
+      <h2 class="projects-block__title">Проекты</h2>
     </div>
 
     <ProjectsFilter v-model:filters="filters" v-model:sort="sort" :tags="tags" />
@@ -19,13 +19,13 @@ const { filters, sort, tags, filteredProjects } = useProjectsFilter(projects)
 </script>
 
 <style scoped>
-.projects {
+.projects-block {
   margin-bottom: 120px;
   padding-top: 30px;
   overflow: hidden;
 }
 
-.projects__title {
+.projects-block__title {
   margin-top: 0;
   margin-bottom: 30px;
   font-weight: 600;
@@ -34,13 +34,13 @@ const { filters, sort, tags, filteredProjects } = useProjectsFilter(projects)
 }
 
 @media screen and (max-width: 1200px) {
-  .projects {
+  .projects-block {
     margin-bottom: 100px;
   }
 }
 
 @media screen and (max-width: 1023px) {
-  .projects {
+  .projects-block {
     margin-bottom: 80px;
   }
 }

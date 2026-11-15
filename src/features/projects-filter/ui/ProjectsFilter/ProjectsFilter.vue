@@ -14,7 +14,7 @@
         <button
           class="projects-filter-sort__btn"
           aria-label="Сортировка"
-          :class="{ active: sortOpen }"
+          :class="{ 'm-active': sortOpen }"
           @click.prevent="toggleSort"
         >
           <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -22,11 +22,11 @@
           </svg>
           {{ activeSortOption.label }}
         </button>
-        <ul class="projects-filter-sort__list" :class="{ active: sortOpen }">
+        <ul class="projects-filter-sort__list" :class="{ 'm-active': sortOpen }">
           <li class="projects-filter-sort__item" v-for="option in sortOptions" :key="option.value">
             <button
               class="projects-filter-sort__itembtn"
-              :class="{ active: option.value === sort }"
+              :class="{ 'm-active': option.value === sort }"
               @click.prevent="changeSort(option.value)"
             >
               <svg class="projects-filter-sort__icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -55,8 +55,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { vClickOutside } from '@/shared/lib/directives'
-import { findSortOption, sortOptions, type SortDirection, type SortValue } from '../../model/sort'
+import { vClickOutside } from '@/shared/utils/directives'
+import { findSortOption, sortOptions, type SortDirection, type SortOption, type SortValue } from '../../model/sort'
 
 defineProps<{
   tags: string[]
@@ -72,7 +72,7 @@ const icons: Record<SortDirection, string> = {
 
 const sortOpen = ref(false)
 
-const activeSortOption = computed(() => findSortOption(sort.value))
+const activeSortOption = computed<SortOption>(() => findSortOption(sort.value))
 
 function resetFilter() {
   filters.value = []
@@ -92,4 +92,4 @@ function changeSort(value: SortValue) {
 }
 </script>
 
-<style scoped src="./ProjectsFilter.css"></style>
+<style scoped src="./projects-filter.css"></style>

@@ -10,7 +10,7 @@
       </div>
       <p class="project-card__descr">{{ project.description }}</p>
       <ul class="project-card__tags">
-        <li class="project-card__tag" v-for="(tag, index) in project.tags" :key="index">
+        <li class="project-card__tag" v-for="tag in project.tags" :key="tag">
           #{{ tag }}
         </li>
       </ul>
@@ -34,13 +34,13 @@ const formatDate = (date: string): string => date.split('.').reverse().join('.')
   display: block;
   height: 100%;
   padding: 20px;
-  background-color: var(--secondary-bg);
+  background-color: var(--secondary-bg, #2c2c33);
   border-radius: 5px;
   transition: color 0.2s;
 
   &:hover,
   &:focus {
-    color: var(--accent);
+    color: var(--accent, #7aedf5);
   }
 }
 
@@ -50,7 +50,7 @@ const formatDate = (date: string): string => date.split('.').reverse().join('.')
   justify-content: center;
   height: 200px;
   padding: 20px;
-  background-color: var(--projects-bg);
+  background-color: var(--projects-bg, #ebeaec);
   border-radius: 5px;
 }
 

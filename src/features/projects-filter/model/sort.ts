@@ -3,7 +3,7 @@ import type { Project } from '@/entities/project'
 export type SortDirection = 'asc' | 'desc'
 export type SortValue = 'dateAsc' | 'dateDesc' | 'alphabetAsc' | 'alphabetDesc'
 
-export interface SortOption {
+export type SortOption = {
   value: SortValue
   label: string
   direction: SortDirection

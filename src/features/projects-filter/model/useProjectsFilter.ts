@@ -8,9 +8,9 @@ export function useProjectsFilter(projects: readonly Project[]) {
   const filters = ref<string[]>([])
   const sort = ref<SortValue>('dateDesc')
 
-  const tags = computed(() => [...new Set(projects.flatMap(project => project.tags))].sort())
+  const tags = computed<string[]>(() => [...new Set(projects.flatMap(project => project.tags))].sort())
 
-  const filteredProjects = computed(() => {
+  const filteredProjects = computed<Project[]>(() => {
     const list = filters.value.length
       ? projects.filter(project => filters.value.some(tag => project.tags.includes(tag)))
       : [...projects]
