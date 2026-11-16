@@ -1,2 +1,9 @@
-/** '2019.03.25' → '25.03.2019' */
-export const formatDate = (date: string): string => date.split('.').reverse().join('.')
+const DATE_FORMATTER = new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: 'UTC'
+})
+
+/** ISO-дата '2021-04-15' → '15.04.2021' */
+export const formatDate = (isoDate: string): string => DATE_FORMATTER.format(new Date(`${isoDate}T00:00:00Z`))
