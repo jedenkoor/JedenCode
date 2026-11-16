@@ -1,119 +1,119 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* Видимый фокус только при навигации с клавиатуры: мышиный клик рамку не показывает */
 :focus-visible {
-  outline: 2px solid var(--accent, #7aedf5);
-  outline-offset: 2px;
+    outline: 2px solid var(--accent, #7aedf5);
+    outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 body {
-  background-color: var(--main-bg, #222222);
-  color: var(--main-text, #fff);
-  font-family: 'Jura', sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-font-smoothing: antialiased;
+    background-color: var(--main-bg, #222222);
+    color: var(--main-text, #fff);
+    font-family: 'Jura', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-font-smoothing: antialiased;
 }
 
 ul,
 ol {
-  margin: 0;
+    margin: 0;
 }
 
 p {
-  margin-top: 0;
-  margin-bottom: 16px;
+    margin-top: 0;
+    margin-bottom: 16px;
 }
 
 p:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 a {
-  color: unset;
-  text-decoration: none;
+    color: unset;
+    text-decoration: none;
 }
 
 b {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 img {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 /* Utilities shared by several layers */
 
 .container {
-  width: 100%;
-  max-width: 1368px;
-  margin: 0 auto;
-  padding: 0 24px;
+    width: 100%;
+    max-width: 1368px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-  clip: rect(0 0 0 0);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0 0 0 0);
 }
 
 @media screen and (min-width: 1200px) {
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
 
-  ::-webkit-scrollbar-button {
-    display: none;
-  }
+    ::-webkit-scrollbar-button {
+        display: none;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background: var(--main-text, #fff);
-    border-radius: 2px;
-  }
+    ::-webkit-scrollbar-thumb {
+        background: var(--main-text, #fff);
+        border-radius: 2px;
+    }
 
-  ::-webkit-scrollbar-track {
-    background: var(--secondary-bg, #2c2c33);
-  }
+    ::-webkit-scrollbar-track {
+        background: var(--secondary-bg, #2c2c33);
+    }
 }
 
 @media screen and (max-width: 767px) {
-  body {
-    font-size: 14px;
-  }
+    body {
+        font-size: 14px;
+    }
 
-  .container {
-    padding: 0 16px;
-  }
+    .container {
+        padding: 0 16px;
+    }
 }

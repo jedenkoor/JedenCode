@@ -6,16 +6,16 @@ type ClickOutsideHandler = (event: MouseEvent) => void
 const handlers = new WeakMap<HTMLElement, ClickOutsideHandler>()
 
 export const vClickOutside: Directive<HTMLElement, ClickOutsideHandler> = {
-  mounted(el, binding) {
-    const handler: ClickOutsideHandler = event => {
-      if (!el.contains(event.target as Node)) binding.value(event)
+    mounted(el, binding) {
+        const handler: ClickOutsideHandler = event => {
+            if (!el.contains(event.target as Node)) binding.value(event)
+        }
+        handlers.set(el, handler)
+        document.addEventListener('click', handler)
+    },
+    unmounted(el) {
+        const handler = handlers.get(el)
+        if (handler) document.removeEventListener('click', handler)
+        handlers.delete(el)
     }
-    handlers.set(el, handler)
-    document.addEventListener('click', handler)
-  },
-  unmounted(el) {
-    const handler = handlers.get(el)
-    if (handler) document.removeEventListener('click', handler)
-    handlers.delete(el)
-  }
 }

@@ -32,9 +32,10 @@
   "type": "module",
   "prettier": {
     "trailingComma": "none",
-    "tabWidth": 2,
+    "tabWidth": 4,
     "semi": false,
     "singleQuote": true,
-    "printWidth": 120
+    "printWidth": 120,
+    "arrowParens": "avoid"
   }
 }

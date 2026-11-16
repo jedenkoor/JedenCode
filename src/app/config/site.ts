@@ -7,6 +7,6 @@ export const SITE_LANG = 'ru'
 export const SITE_TITLE = 'JedenCode — фронтенд-разработчик: портфолио проектов'
 
 export const SITE_DESCRIPTION =
-  'Портфолио фронтенд-разработчика: интернет-магазины, корпоративные сайты и лендинги на Vue, Nuxt и TypeScript.'
+    'Портфолио фронтенд-разработчика: интернет-магазины, корпоративные сайты и лендинги на Vue, Nuxt и TypeScript.'
 
 export const SITE_OG_IMAGE_URL = `${SITE_URL}/og-share-img.jpg`

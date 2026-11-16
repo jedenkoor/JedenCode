@@ -1,5 +1,5 @@
 <template>
-  <NotFoundPage />
+    <NotFoundPage />
 </template>
 
 <script setup lang="ts">
