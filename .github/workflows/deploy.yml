@@ -54,8 +54,8 @@ jobs:
     secrets: inherit
 
   deploy-3:
-    needs: [build, deploy-2]
-    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-2.outputs.deployed != 'true' }}
+    needs: [build, deploy-1, deploy-2]
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' && needs.deploy-2.outputs.deployed != 'true' }}
     uses: ./.github/workflows/ftp-upload.yml
     with:
       attempt: 3
