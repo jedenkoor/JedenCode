@@ -1,94 +1,117 @@
 <template>
-  <button
-    class="theme-toggle"
-    type="button"
-    aria-label="Светлая тема"
-    :aria-pressed="isLightTheme"
-    @click="toggleTheme"
-  >
-    <span class="theme-toggle__moon" aria-hidden="true"></span>
-    <span class="theme-toggle__sun" aria-hidden="true"></span>
-    <!-- Ray N is rotated by N * 30deg; numbering starts at 3 as in the original nth-child layout -->
-    <small v-for="ray in 6" :key="ray" class="theme-toggle__ray" aria-hidden="true" :style="{ '--ray': ray + 2 }"></small>
-  </button>
+    <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Светлая тема"
+        :aria-pressed="isMounted ? isLightTheme : undefined"
+        @click="toggleTheme"
+    >
+        <span class="theme-toggle__moon" aria-hidden="true"></span>
+        <span class="theme-toggle__sun" aria-hidden="true"></span>
+        <!-- Ray N is rotated by N * 30deg; numbering starts at 3 as in the original nth-child layout -->
+        <small
+            v-for="ray in 6"
+            :key="ray"
+            class="theme-toggle__ray"
+            aria-hidden="true"
+            :style="{ '--ray': ray + 2 }"
+        ></small>
+    </button>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useTheme } from '../model/useTheme'
 
 const { isLightTheme, toggleTheme } = useTheme()
+
+/**
+ * Тема определяется на клиенте по классу на `<html>`; на сервере её нет.
+ * До монтирования не выводим состояние в разметку, иначе SSR и клиент
+ * расходятся и Vue сообщает о hydration mismatch.
+ */
+const isMounted = ref<boolean>(false)
+
+onMounted(() => {
+    isMounted.value = true
+})
 </script>
 
 <style scoped>
 .theme-toggle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 37px;
-  height: 37px;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 37px;
+    height: 37px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
 
-  &:hover .theme-toggle__ray,
-  &:focus .theme-toggle__ray {
-    transform: rotate(calc(var(--ray, 0) * 30deg - 20deg));
-  }
+    &:hover .theme-toggle__ray,
+    &:focus .theme-toggle__ray {
+        transform: rotate(calc(var(--ray, 0) * 30deg - 20deg));
+    }
 }
 
 .theme-toggle__sun {
-  width: 34px;
-  height: 34px;
-  background: var(--toggle-color-secondary, #eec413);
-  border: 4px solid var(--main-bg, #222222);
-  border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    background: var(--toggle-color-secondary, #eec413);
+    border: 4px solid var(--main-bg, #222222);
+    border-radius: 50%;
 }
 
 .theme-toggle__ray {
-  position: absolute;
-  z-index: -1;
-  display: block;
-  width: 2px;
-  height: 121%;
-  background: var(--toggle-color-secondary, #eec413);
-  transform: rotate(calc(var(--ray, 0) * 30deg));
-  transition: 0.4s all, height 0.3s ease-in-out;
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: 2px;
+    height: 121%;
+    background: var(--toggle-color-secondary, #eec413);
+    transform: rotate(calc(var(--ray, 0) * 30deg));
+    transition:
+        0.4s all,
+        height 0.3s ease-in-out;
 }
 
 .theme-toggle__moon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  width: 28px;
-  height: 28px;
-  background: var(--main-bg, #222222);
-  border-radius: 50%;
-  transform: scale(0) translate(25%, -25%);
-  transform-origin: right;
-  transition: 0.4s transform;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: 28px;
+    height: 28px;
+    background: var(--main-bg, #222222);
+    border-radius: 50%;
+    transform: scale(0) translate(25%, -25%);
+    transform-origin: right;
+    transition: 0.4s transform;
 }
 
 /* Light theme: .light-theme is set on <html> */
 
 .light-theme .theme-toggle {
-  background-color: var(--main-bg, #222222);
+    background-color: var(--main-bg, #222222);
 }
 
 .light-theme .theme-toggle__moon {
-  transform: scale(1) translate(11%, -11%);
+    transform: scale(1) translate(11%, -11%);
 }
 
 .light-theme .theme-toggle:hover .theme-toggle__moon,
 .light-theme .theme-toggle:focus .theme-toggle__moon {
-  transform: scale(1) translate(-3%, -18%);
+    transform: scale(1) translate(-3%, -18%);
 }
 
 .light-theme .theme-toggle .theme-toggle__ray {
-  height: 0;
-  transform: rotate(calc(var(--ray, 0) * 30deg - 45deg));
-  transition: 0.4s, transform 0.4s, height 0.2s 0.1s;
+    height: 0;
+    transform: rotate(calc(var(--ray, 0) * 30deg - 45deg));
+    transition:
+        0.4s,
+        transform 0.4s,
+        height 0.2s 0.1s;
 }
 </style>
