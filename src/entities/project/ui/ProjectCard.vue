@@ -21,7 +21,7 @@
                     <span class="visually-hidden">— открыть демо в новой вкладке</span>
                 </a>
             </h2>
-            <div class="project-card__date">{{ formatDate(project.date) }}</div>
+            <div class="project-card__year">{{ project.year }}</div>
         </div>
 
         <p class="project-card__descr">{{ project.description }}</p>
@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
 import type { Project } from '../model/types'
-import { formatDate } from '../utils/formatDate'
 
 withDefaults(
     defineProps<{
@@ -117,7 +116,7 @@ withDefaults(
     }
 }
 
-.project-card__date {
+.project-card__year {
     white-space: nowrap;
 }
 

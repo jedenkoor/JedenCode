@@ -1,4 +1,4 @@
-type ProjectType = 'Интернет-магазин' | 'Корпоративный сайт' | 'Сайт-визитка'
+type ProjectType = 'Интернет-магазин' | 'Корпоративный сайт' | 'Сайт-визитка' | 'Веб-сервис'
 
 type Project = {
     title: string
@@ -12,8 +12,8 @@ type Project = {
     stack: string[]
     /** Тип сайта — отдельно от стека */
     type: ProjectType
-    /** ISO-дата создания: '2021-04-15' */
-    date: string
+    /** Год создания: по нему карточка показывает год и сортируется */
+    year: number
 }
 
 export type { Project, ProjectType }

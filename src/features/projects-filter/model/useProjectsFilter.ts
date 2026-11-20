@@ -4,7 +4,7 @@ import type { Project } from '@/entities/project'
 import { findSortOption, sortOptions, type SortValue } from './sort'
 
 /** Сортировка по умолчанию: в URL её не пишем */
-const DEFAULT_SORT: SortValue = 'date-desc'
+const DEFAULT_SORT: SortValue = 'year-desc'
 
 const checkIsSortValue = (value: unknown): value is SortValue =>
     typeof value === 'string' && sortOptions.some(option => option.value === value)
@@ -30,7 +30,7 @@ const readStackQuery = (value: unknown): string[] => {
 /**
  * Фильтрация и сортировка проектов.
  *
- * Начальное состояние читается из query (`?stack=Vue,Webpack&sort=date-asc`),
+ * Начальное состояние читается из query (`?stack=Vue,Webpack&sort=year-asc`),
  * изменения пишутся обратно через `router.replace`, поэтому SSR сразу отдаёт
  * отфильтрованный список, а ссылкой можно поделиться.
  */
