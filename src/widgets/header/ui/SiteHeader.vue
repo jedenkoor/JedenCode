@@ -1,12 +1,12 @@
 <template>
     <header class="site-header">
         <div class="container site-header__container">
-            <SiteLogo :to="{ name: 'main' }" />
+            <SiteLogo :to="localePath('/')" />
 
             <nav class="site-header__nav" aria-label="Основная навигация">
                 <ul class="site-header__list">
                     <li class="site-header__item">
-                        <NuxtLink class="site-header__link" :to="{ name: 'projects' }">Проекты</NuxtLink>
+                        <NuxtLink class="site-header__link" :to="localePath('/projects')">Проекты</NuxtLink>
                     </li>
                 </ul>
             </nav>
@@ -17,9 +17,12 @@
 </template>
 
 <script setup lang="ts">
+import { useLocalePath } from '#imports'
 import { NuxtLink } from '#components'
 import { ThemeToggle } from '@/features/theme-toggle'
 import { SiteLogo } from '@/shared/ui/logo'
+
+const localePath = useLocalePath()
 </script>
 
 <style scoped>

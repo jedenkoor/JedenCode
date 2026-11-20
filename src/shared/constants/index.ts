@@ -1,1 +1,2 @@
+export { APP_LOCALES, checkIsAppLocale, DEFAULT_LOCALE, LOCALE_NAMES, type AppLocale } from './locale'
 export { THEME_COLOR_DARK, THEME_DARK_VALUE, THEME_LIGHT_CLASS, THEME_LIGHT_VALUE, THEME_STORAGE_KEY } from './theme'

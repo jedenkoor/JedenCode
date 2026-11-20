@@ -1,0 +1,72 @@
+{
+    "nav": {
+        "main": "Основная навигация",
+        "projects": "Проекты",
+        "language": "Язык"
+    },
+    "common": {
+        "opensInNewTab": "Откроется в новой вкладке",
+        "logoHome": "JedenCode — на главную"
+    },
+    "theme": {
+        "toggle": "Светлая тема"
+    },
+    "main": {
+        "title": "Личный сайт веб-разработчика JedenCode"
+    },
+    "notFound": {
+        "title": "Страница не найдена",
+        "text": "Возможно, ссылка устарела или в адресе опечатка.",
+        "back": "Вернуться на главную",
+        "pageTitle": "Страница не найдена — JedenCode",
+        "description": "Запрошенная страница не найдена."
+    },
+    "projects": {
+        "title": "Проекты",
+        "filter": {
+            "stackLabel": "Фильтр проектов по стеку",
+            "sortLabel": "Сортировка: {option}",
+            "reset": "Сбросить фильтр",
+            "sort": {
+                "yearAsc": "По году создания",
+                "yearDesc": "По году создания",
+                "alphabetAsc": "По алфавиту A-Z",
+                "alphabetDesc": "По алфавиту Z-A"
+            }
+        },
+        "card": {
+            "openDemo": "— открыть демо в новой вкладке",
+            "repo": "Код на GitHub",
+            "type": {
+                "ecommerce": "Интернет-магазин",
+                "corporate": "Корпоративный сайт",
+                "landing": "Сайт-визитка",
+                "web-service": "Веб-сервис"
+            }
+        }
+    },
+    "profile": {
+        "facts": {
+            "experience": "Опыт",
+            "location": "Локация",
+            "languages": "Языки"
+        },
+        "experienceYears": "{years}+ лет",
+        "sections": {
+            "experience": "Опыт работы",
+            "education": "Образование",
+            "skills": "Стек",
+            "projects": "Проекты:"
+        },
+        "cv": "Скачать резюме (PDF)"
+    },
+    "seo": {
+        "siteTitle": "JedenCode — портфолио фронтенд-разработчика",
+        "siteDescription": "Портфолио фронтенд-разработчика: интернет-магазины, корпоративные сайты и лендинги на Vue, Nuxt и TypeScript.",
+        "mainTitle": "Даниил Кузьмин — Senior Frontend Developer (Vue, Nuxt, React)",
+        "mainDescription": "Senior фронтенд-разработчик с опытом 7+ лет: SPA и SSR-приложения на Vue, Nuxt, React и TypeScript.",
+        "projectsTitle": "Проекты — Даниил Кузьмин",
+        "projectsDescription": "Избранные проекты: интернет-магазины, корпоративные сайты и веб-сервисы на Vue, Nuxt и TypeScript.",
+        "ogImageAlt": "JedenCode — портфолио фронтенд-разработчика"
+    }
+}

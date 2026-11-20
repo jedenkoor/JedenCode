@@ -1,0 +1,72 @@
+{
+    "nav": {
+        "main": "Main navigation",
+        "projects": "Projects",
+        "language": "Language"
+    },
+    "common": {
+        "opensInNewTab": "Opens in a new tab",
+        "logoHome": "JedenCode — go to home page"
+    },
+    "theme": {
+        "toggle": "Light theme"
+    },
+    "main": {
+        "title": "Personal website of web developer JedenCode"
+    },
+    "notFound": {
+        "title": "Page not found",
+        "text": "The link may be outdated or there is a typo in the address.",
+        "back": "Back to home",
+        "pageTitle": "Page not found — JedenCode",
+        "description": "The requested page was not found."
+    },
+    "projects": {
+        "title": "Projects",
+        "filter": {
+            "stackLabel": "Filter projects by stack",
+            "sortLabel": "Sorting: {option}",
+            "reset": "Reset filter",
+            "sort": {
+                "yearAsc": "By creation year",
+                "yearDesc": "By creation year",
+                "alphabetAsc": "Alphabetically A-Z",
+                "alphabetDesc": "Alphabetically Z-A"
+            }
+        },
+        "card": {
+            "openDemo": "— open demo in a new tab",
+            "repo": "Code on GitHub",
+            "type": {
+                "ecommerce": "Online store",
+                "corporate": "Corporate website",
+                "landing": "Landing page",
+                "web-service": "Web service"
+            }
+        }
+    },
+    "profile": {
+        "facts": {
+            "experience": "Experience",
+            "location": "Location",
+            "languages": "Languages"
+        },
+        "experienceYears": "{years}+ years",
+        "sections": {
+            "experience": "Work experience",
+            "education": "Education",
+            "skills": "Stack",
+            "projects": "Projects:"
+        },
+        "cv": "Download CV (PDF)"
+    },
+    "seo": {
+        "siteTitle": "JedenCode — frontend developer portfolio",
+        "siteDescription": "Frontend developer portfolio: e-commerce stores, corporate websites and landing pages built with Vue, Nuxt and TypeScript.",
+        "mainTitle": "Daniil Kuzmin — Senior Frontend Developer (Vue, Nuxt, React)",
+        "mainDescription": "Senior frontend developer with 7+ years of experience building SPA and SSR applications with Vue, Nuxt, React and TypeScript.",
+        "projectsTitle": "Projects — Daniil Kuzmin",
+        "projectsDescription": "Selected frontend projects: e-commerce stores, corporate websites and web services built with Vue, Nuxt and TypeScript.",
+        "ogImageAlt": "JedenCode — frontend developer portfolio"
+    }
+}

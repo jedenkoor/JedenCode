@@ -2,13 +2,15 @@
     <div class="container not-found-page">
         <h1 class="not-found-page__title">Страница не найдена</h1>
         <p class="not-found-page__text">Возможно, ссылка устарела или в адресе опечатка.</p>
-        <NuxtLink class="not-found-page__link" :to="{ name: 'main' }">Вернуться на главную</NuxtLink>
+        <NuxtLink class="not-found-page__link" :to="localePath('/')">Вернуться на главную</NuxtLink>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useHead } from '#imports'
+import { useHead, useLocalePath } from '#imports'
 import { NuxtLink } from '#components'
+
+const localePath = useLocalePath()
 
 useHead({
     title: 'Страница не найдена — JedenCode',
