@@ -18,14 +18,14 @@
             <h2 class="project-card__title">
                 <a class="project-card__title-link" :href="project.demo" target="_blank" rel="noopener noreferrer">
                     {{ project.title }}
-                    <span class="visually-hidden">— открыть демо в новой вкладке</span>
+                    <span class="visually-hidden">{{ t('projects.card.openDemo') }}</span>
                 </a>
             </h2>
             <div class="project-card__year">{{ project.year }}</div>
         </div>
 
         <p class="project-card__descr">{{ project.description }}</p>
-        <p class="project-card__type">{{ project.type }}</p>
+        <p class="project-card__type">{{ t(`projects.card.type.${project.type}`) }}</p>
 
         <ul class="project-card__tags">
             <li class="project-card__tag" v-for="technology in project.stack" :key="technology">#{{ technology }}</li>
@@ -38,14 +38,17 @@
             target="_blank"
             rel="noopener noreferrer"
         >
-            Код на GitHub
-            <span class="visually-hidden">Откроется в новой вкладке</span>
+            {{ t('projects.card.repo') }}
+            <span class="visually-hidden">{{ t('common.opensInNewTab') }}</span>
         </a>
     </li>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { Project } from '../model/types'
+
+const { t } = useI18n()
 
 withDefaults(
     defineProps<{

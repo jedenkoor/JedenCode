@@ -6,4 +6,4 @@ export type {
     ProfileLanguage,
     ProfileSkillGroup
 } from './model/types'
-export { profile } from './model/profile'
+export { getProfile } from './model/profile'

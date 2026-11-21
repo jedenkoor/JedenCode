@@ -1,10 +1,17 @@
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from './site'
+import { LOCALE_LANGUAGES, type AppLocale } from '@/shared/constants'
+import { SITE_NAME, SITE_URL } from './site'
+
+type SiteJsonLdParams = {
+    locale: AppLocale
+    description: string
+    jobTitle: string
+}
 
 /**
  * Структурированные данные страницы: Person + WebSite.
  * Возвращает объект, который остаётся только сериализовать в <script type="application/ld+json">.
  */
-export const buildSiteJsonLd = () => ({
+export const buildSiteJsonLd = ({ locale, description, jobTitle }: SiteJsonLdParams) => ({
     '@context': 'https://schema.org',
     '@graph': [
         {
@@ -12,7 +19,7 @@ export const buildSiteJsonLd = () => ({
             '@id': `${SITE_URL}/#person`,
             name: SITE_NAME,
             url: SITE_URL,
-            jobTitle: 'Фронтенд-разработчик',
+            jobTitle,
             knowsAbout: ['Vue.js', 'Nuxt', 'TypeScript', 'JavaScript', 'CSS']
         },
         {
@@ -20,8 +27,8 @@ export const buildSiteJsonLd = () => ({
             '@id': `${SITE_URL}/#website`,
             url: SITE_URL,
             name: SITE_NAME,
-            description: SITE_DESCRIPTION,
-            inLanguage: 'ru-RU',
+            description,
+            inLanguage: LOCALE_LANGUAGES[locale],
             publisher: { '@id': `${SITE_URL}/#person` }
         }
     ]

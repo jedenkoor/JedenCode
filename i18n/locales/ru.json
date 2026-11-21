@@ -67,6 +67,7 @@
         "mainDescription": "Senior фронтенд-разработчик с опытом 7+ лет: SPA и SSR-приложения на Vue, Nuxt, React и TypeScript.",
         "projectsTitle": "Проекты — Даниил Кузьмин",
         "projectsDescription": "Избранные проекты: интернет-магазины, корпоративные сайты и веб-сервисы на Vue, Nuxt и TypeScript.",
-        "ogImageAlt": "JedenCode — портфолио фронтенд-разработчика"
+        "ogImageAlt": "JedenCode — портфолио фронтенд-разработчика",
+        "jobTitle": "Фронтенд-разработчик"
     }
 }

@@ -67,6 +67,7 @@
         "mainDescription": "Senior frontend developer with 7+ years of experience building SPA and SSR applications with Vue, Nuxt, React and TypeScript.",
         "projectsTitle": "Projects — Daniil Kuzmin",
         "projectsDescription": "Selected frontend projects: e-commerce stores, corporate websites and web services built with Vue, Nuxt and TypeScript.",
-        "ogImageAlt": "JedenCode — frontend developer portfolio"
+        "ogImageAlt": "JedenCode — frontend developer portfolio",
+        "jobTitle": "Frontend developer"
     }
 }

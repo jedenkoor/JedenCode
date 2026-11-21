@@ -1,5 +1,5 @@
 <template>
-    <RouterLink class="site-logo" :to="to" aria-label="JedenCode — на главную">
+    <RouterLink class="site-logo" :to="to" :aria-label="label">
         <svg
             class="site-logo__svg"
             xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +48,8 @@ import type { RouteLocationRaw } from 'vue-router'
 
 defineProps<{
     to: RouteLocationRaw
+    /** Текст для `aria-label`: локализуется на стороне потребителя */
+    label: string
 }>()
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="profile-experience">
-        <h2 class="profile-experience__title">Опыт работы</h2>
+        <h2 class="profile-experience__title">{{ t('profile.sections.experience') }}</h2>
 
         <ol class="profile-experience__list">
             <li v-for="job in experience" :key="`${job.company}-${job.period}`" class="profile-experience__job">
@@ -21,7 +21,7 @@
                 </ul>
 
                 <div v-if="job.projects.length" class="profile-experience__job-projects">
-                    <p class="profile-experience__projects-title">Проекты:</p>
+                    <p class="profile-experience__projects-title">{{ t('profile.sections.projects') }}</p>
                     <ul class="profile-experience__projects">
                         <li v-for="project in job.projects" :key="project.href" class="profile-experience__project">
                             <a
@@ -41,7 +41,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { ProfileExperience } from '@/entities/profile'
+
+const { t } = useI18n()
 
 defineProps<{
     experience: ProfileExperience[]

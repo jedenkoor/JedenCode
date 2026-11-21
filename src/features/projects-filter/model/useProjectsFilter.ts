@@ -1,5 +1,5 @@
-import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from '#imports'
+import { computed, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { onNuxtReady, useRoute, useRouter } from '#imports'
 import type { Project } from '@/entities/project'
 import { findSortOption, sortOptions, type SortValue } from './sort'
 
@@ -34,11 +34,14 @@ const readStackQuery = (value: unknown): string[] => {
  * изменения пишутся обратно через `router.replace`, поэтому SSR сразу отдаёт
  * отфильтрованный список, а ссылкой можно поделиться.
  */
-export function useProjectsFilter(projects: readonly Project[]) {
+export function useProjectsFilter(projects: MaybeRefOrGetter<readonly Project[]>) {
     const route = useRoute()
     const router = useRouter()
 
-    const stacks = computed<string[]>(() => [...new Set(projects.flatMap(project => project.stack))].sort())
+    // Набор проектов зависит от локали, поэтому читаем его лениво
+    const projectList = computed<readonly Project[]>(() => toValue(projects))
+
+    const stacks = computed<string[]>(() => [...new Set(projectList.value.flatMap(project => project.stack))].sort())
 
     const filters = ref<string[]>(readStackQuery(route.query.stack).filter(stack => stacks.value.includes(stack)))
     const initialSort = route.query.sort
@@ -46,13 +49,13 @@ export function useProjectsFilter(projects: readonly Project[]) {
 
     const filteredProjects = computed<Project[]>(() => {
         const list = filters.value.length
-            ? projects.filter(project => filters.value.some(stack => project.stack.includes(stack)))
-            : [...projects]
+            ? projectList.value.filter(project => filters.value.some(stack => project.stack.includes(stack)))
+            : [...projectList.value]
 
         return list.sort(findSortOption(sort.value).compare)
     })
 
-    watch([filters, sort], () => {
+    const applyQuery = (): void => {
         const query = { ...route.query }
 
         if (filters.value.length) {
@@ -68,13 +71,40 @@ export function useProjectsFilter(projects: readonly Project[]) {
             query.sort = sort.value
         }
 
-        void router.replace({ query })
+        void router.replace({ query, hash: route.hash })
+    }
+
+    watch([filters, sort], applyQuery)
+
+    // Во время hydration query может кратковременно прийти пустым:
+    // начинаем реагировать на навигацию только после готовности Nuxt
+    let isRouteSyncReady = false
+    onNuxtReady(() => {
+        isRouteSyncReady = true
+
+        // На статике router при гидратации может потерять query из адреса:
+        // читаем его напрямую и возвращаем в URL состояние фильтров
+        const urlQuery = new URLSearchParams(window.location.search)
+        const nextFilters = readStackQuery(urlQuery.getAll('stack')).filter(stack => stacks.value.includes(stack))
+        if (nextFilters.join('|') !== filters.value.join('|')) {
+            filters.value = nextFilters
+        }
+
+        const nextSortQuery = urlQuery.get('sort')
+        const nextSort = checkIsSortValue(nextSortQuery) ? nextSortQuery : DEFAULT_SORT
+        if (nextSort !== sort.value) {
+            sort.value = nextSort
+        }
+
+        applyQuery()
     })
 
     // Навигация назад/вперёд меняет query без изменения локального состояния
     watch(
         () => route.query,
         query => {
+            if (!isRouteSyncReady) return
+
             const nextFilters = readStackQuery(query.stack).filter(stack => stacks.value.includes(stack))
             if (nextFilters.join('|') !== filters.value.join('|')) {
                 filters.value = nextFilters

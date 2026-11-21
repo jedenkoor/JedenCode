@@ -4,7 +4,7 @@
             ref="sortButtonEl"
             type="button"
             class="projects-filter-sort__btn"
-            :aria-label="`Сортировка: ${activeSortOption.label}`"
+            :aria-label="t('projects.filter.sortLabel', { option: activeSortLabel })"
             aria-controls="projects-filter-sort-list"
             :aria-expanded="sortOpen"
             :class="{ 'm-active': sortOpen }"
@@ -20,7 +20,7 @@
             >
                 <path :d="icons[activeSortOption.direction]" />
             </svg>
-            {{ activeSortOption.label }}
+            {{ activeSortLabel }}
         </button>
 
         <ul id="projects-filter-sort-list" class="projects-filter-sort__list" :class="{ 'm-active': sortOpen }">
@@ -41,7 +41,7 @@
                     >
                         <path :d="icons[option.direction]" />
                     </svg>
-                    {{ option.label }}
+                    {{ getSortLabel(option) }}
                 </button>
             </li>
         </ul>
@@ -50,6 +50,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef } from 'vue'
+import { useI18n } from '#imports'
 import { vClickOutside } from '@/shared/utils/directives'
 import { findSortOption, sortOptions, type SortDirection, type SortOption, type SortValue } from '../../model/sort'
 
@@ -58,12 +59,16 @@ const icons: Record<SortDirection, string> = {
     desc: 'M3.5 14.5L3.14645 14.8536C3.34171 15.0488 3.65829 15.0488 3.85355 14.8536L3.5 14.5ZM3.85355 14.8536L6.85355 11.8536L6.14645 11.1464L3.14645 14.1464L3.85355 14.8536ZM3.85355 14.1464L0.853553 11.1464L0.146447 11.8536L3.14645 14.8536L3.85355 14.1464ZM3 0V14.5H4V0H3ZM9 4H15V3H9V4ZM9 8H13V7H9V8ZM9 12H11V11H9V12Z'
 }
 
+const { t } = useI18n()
+
 const sort = defineModel<SortValue>({ required: true })
 
 const sortOpen = ref<boolean>(false)
 const sortButtonEl = useTemplateRef<HTMLButtonElement>('sortButtonEl')
 
 const activeSortOption = computed<SortOption>(() => findSortOption(sort.value))
+const getSortLabel = (option: SortOption): string => t(`projects.filter.sort.${option.labelKey}`)
+const activeSortLabel = computed<string>(() => getSortLabel(activeSortOption.value))
 
 function toggleSort() {
     sortOpen.value = !sortOpen.value

@@ -1,6 +1,6 @@
 <template>
     <div class="profile-contacts">
-        <a class="profile-contacts__action" :href="cvUrl" download>Скачать резюме (PDF)</a>
+        <a class="profile-contacts__action" :href="cvUrl" download>{{ t('profile.cv') }}</a>
         <a
             v-for="contact in contacts"
             :key="contact.kind"
@@ -10,13 +10,16 @@
             :rel="contact.isExternal ? 'noopener noreferrer' : undefined"
         >
             {{ contact.label }}
-            <span v-if="contact.isExternal" class="visually-hidden">Откроется в новой вкладке</span>
+            <span v-if="contact.isExternal" class="visually-hidden">{{ t('common.opensInNewTab') }}</span>
         </a>
     </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { ProfileContact } from '@/entities/profile'
+
+const { t } = useI18n()
 
 defineProps<{
     cvUrl: string

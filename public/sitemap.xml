@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://jedenkoor.ru/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jedenkoor.ru/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://jedenkoor.ru/ru" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jedenkoor.ru/" />
   </url>
   <url>
     <loc>https://jedenkoor.ru/projects</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jedenkoor.ru/projects" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://jedenkoor.ru/ru/projects" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jedenkoor.ru/projects" />
+  </url>
+  <url>
+    <loc>https://jedenkoor.ru/ru</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jedenkoor.ru/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://jedenkoor.ru/ru" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jedenkoor.ru/" />
+  </url>
+  <url>
+    <loc>https://jedenkoor.ru/ru/projects</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jedenkoor.ru/projects" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://jedenkoor.ru/ru/projects" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jedenkoor.ru/projects" />
   </url>
 </urlset>

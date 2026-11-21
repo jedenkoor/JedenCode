@@ -6,13 +6,14 @@ Nuxt 4 (static generation) + Vue 3 + TypeScript.
 [Feature-Sliced Design](https://feature-sliced.design/). Layers import only from layers below them,
 and other slices are imported only through their public API (`index.ts`):
 ```
+i18n/         locales/en.json, ru.json — UI-сообщения (framework-конфиг, не слой FSD)
 src/
   app/        Nuxt srcDir: App.vue, routes/ (file-based routing), global styles (reset, fonts, theme, utilities)
-  pages/      main, not-found
-  widgets/    header, footer, projects (projects block + list)
-  features/   theme-toggle, projects-filter
-  entities/   project (type, data, ProjectCard)
-  shared/     ui/logo, utils/directives, constants
+  pages/      main, projects, not-found
+  widgets/    header, footer, profile, projects (projects block + list)
+  features/   locale-switch, theme-toggle, projects-filter
+  entities/   profile (localized data), project (types, localized data, ProjectCard)
+  shared/     ui/logo, utils/directives, composables, constants
 ```
 Nuxt specifics (`nuxt.config.ts`): `srcDir` is `src/app`, file-based routes live in `src/app/routes/`
 as thin wrappers around the FSD `pages` layer, `@/` points to `src/`, and auto-imports of components
@@ -30,6 +31,15 @@ and composables are disabled: everything is imported explicitly through public A
   and can be preloaded from `nuxt.config.ts`.
 - The theme is applied by an inline script in `<head>` (`src/app/config/theme.ts`) before the first
   paint: no flash of the dark theme, system preference respected, choice stored in `localStorage`.
+
+## Languages
+- English is the default locale at `/`, Russian is served from `/ru/` (`prefix_except_default`).
+- The header switch builds locale-aware links with `switchLocalePath` and stores the choice in the
+  `i18n_locale` cookie, so a later visit to `/` keeps the selected language.
+- `@nuxtjs/i18n` renders `<html lang>`, `canonical`, `hreflang` and `og:locale`; per-page SEO lives
+  in `useSeoMeta`, JSON-LD is localized in `src/app/config/seo.ts`.
+- UI strings are in `i18n/locales/*.json`; profile and project content are localized in the entity
+  `model/locales` / `LocalizedText` fields.
 
 ## Project setup
 ```

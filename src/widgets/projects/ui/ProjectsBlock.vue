@@ -1,7 +1,7 @@
 <template>
     <section class="projects-block">
         <div class="container">
-            <h1 class="projects-block__title">Проекты</h1>
+            <h1 class="projects-block__title">{{ t('projects.title') }}</h1>
         </div>
 
         <ProjectsFilter v-model:filters="filters" v-model:sort="sort" :stacks="stacks" />
@@ -11,9 +11,16 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from '#imports'
 import { ProjectsFilter, useProjectsFilter } from '@/features/projects-filter'
-import { projects } from '@/entities/project'
+import { getProjects } from '@/entities/project'
+import { useAppLocale } from '@/shared/composables'
 import ProjectsList from './ProjectsList.vue'
+
+const { t } = useI18n()
+const locale = useAppLocale()
+const projects = computed(() => getProjects(locale.value))
 
 const { filters, sort, stacks, filteredProjects } = useProjectsFilter(projects)
 </script>

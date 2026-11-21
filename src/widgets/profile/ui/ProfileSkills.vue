@@ -1,6 +1,6 @@
 <template>
     <div class="profile-skills">
-        <h2 class="profile-skills__title">Стек</h2>
+        <h2 class="profile-skills__title">{{ t('profile.sections.skills') }}</h2>
 
         <div class="profile-skills__groups">
             <div v-for="group in groups" :key="group.title" class="profile-skills__group">
@@ -14,7 +14,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { ProfileSkillGroup } from '@/entities/profile'
+
+const { t } = useI18n()
 
 defineProps<{
     groups: ProfileSkillGroup[]

@@ -1,5 +1,10 @@
 <template>
-    <button type="button" class="projects-filter-reset" aria-label="Сбросить фильтр" @click="emit('reset')">
+    <button
+        type="button"
+        class="projects-filter-reset"
+        :aria-label="t('projects.filter.reset')"
+        @click="emit('reset')"
+    >
         <svg
             class="projects-filter-reset__icon"
             width="15"
@@ -10,11 +15,15 @@
         >
             <path d="M2 2L13 13M2 13L13 2" />
         </svg>
-        Сбросить фильтр
+        {{ t('projects.filter.reset') }}
     </button>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
+
+const { t } = useI18n()
+
 const emit = defineEmits<{
     reset: []
 }>()

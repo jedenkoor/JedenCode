@@ -6,19 +6,20 @@
 
         <dl class="profile-overview__facts">
             <div class="profile-overview__fact">
-                <dt class="profile-overview__fact-term">Опыт</dt>
-                <dd class="profile-overview__fact-value">{{ experienceYears }}+ лет</dd>
+                <dt class="profile-overview__fact-term">{{ t('profile.facts.experience') }}</dt>
+                <dd class="profile-overview__fact-value">
+                    {{ t('profile.experienceYears', { years: experienceYears }) }}
+                </dd>
             </div>
             <div class="profile-overview__fact">
-                <dt class="profile-overview__fact-term">Локация</dt>
+                <dt class="profile-overview__fact-term">{{ t('profile.facts.location') }}</dt>
                 <dd class="profile-overview__fact-value">{{ location }}</dd>
             </div>
             <div class="profile-overview__fact">
-                <dt class="profile-overview__fact-term">Языки</dt>
+                <dt class="profile-overview__fact-term">{{ t('profile.facts.languages') }}</dt>
                 <dd class="profile-overview__fact-value">
                     <span v-for="(language, index) in languages" :key="language.language">
-                        {{ language.language }} — {{ language.level }}
-                        <template v-if="index < languages.length - 1">, </template>
+                        {{ language.language }} — {{ language.level }}{{ index < languages.length - 1 ? ', ' : '' }}
                     </span>
                 </dd>
             </div>
@@ -27,7 +28,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { ProfileLanguage } from '@/entities/profile'
+
+const { t } = useI18n()
 
 defineProps<{
     fullName: string

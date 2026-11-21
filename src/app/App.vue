@@ -15,11 +15,13 @@ import { useHead, useI18n, useLocaleHead, useRoute, useSeoMeta } from '#imports'
 import { NuxtPage } from '#components'
 import { SiteHeader } from '@/widgets/header'
 import { SiteFooter } from '@/widgets/footer'
-import { SITE_URL } from './config/site'
+import { useAppLocale } from '@/shared/composables'
+import { SITE_OG_IMAGE_URL, SITE_URL } from './config/site'
 import { buildSiteJsonLd } from './config/seo'
 
 const { t } = useI18n()
 const route = useRoute()
+const appLocale = useAppLocale()
 const localeHead = useLocaleHead({ seo: true })
 
 useSeoMeta({
@@ -27,8 +29,9 @@ useSeoMeta({
     description: () => t('seo.siteDescription'),
     ogTitle: () => t('seo.siteTitle'),
     ogDescription: () => t('seo.siteDescription'),
+    ogImage: SITE_OG_IMAGE_URL,
     ogImageAlt: () => t('seo.ogImageAlt'),
-    ogUrl: () => `${SITE_URL}${route.fullPath}`
+    ogUrl: () => `${SITE_URL}${route.path}`
 })
 
 useHead(() => ({
@@ -37,8 +40,14 @@ useHead(() => ({
     meta: localeHead.value.meta,
     script: [
         {
-            type: 'application/ld+json',
-            innerHTML: JSON.stringify(buildSiteJsonLd())
+            type: 'application/ld+json' as const,
+            innerHTML: JSON.stringify(
+                buildSiteJsonLd({
+                    locale: appLocale.value,
+                    description: t('seo.siteDescription'),
+                    jobTitle: t('seo.jobTitle')
+                })
+            )
         }
     ]
 }))

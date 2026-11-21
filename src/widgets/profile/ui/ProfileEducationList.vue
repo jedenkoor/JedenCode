@@ -1,6 +1,6 @@
 <template>
     <div class="profile-education">
-        <h2 class="profile-education__title">Образование</h2>
+        <h2 class="profile-education__title">{{ t('profile.sections.education') }}</h2>
 
         <ul class="profile-education__list">
             <li v-for="item in education" :key="item.institution" class="profile-education__item">
@@ -11,7 +11,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
 import type { ProfileEducation } from '@/entities/profile'
+
+const { t } = useI18n()
 
 defineProps<{
     education: ProfileEducation[]

@@ -1,8 +1,14 @@
-type ProjectType = 'Интернет-магазин' | 'Корпоративный сайт' | 'Сайт-визитка' | 'Веб-сервис'
+import type { AppLocale } from '@/shared/constants'
 
-type Project = {
-    title: string
-    description: string
+/** Код типа сайта: подпись берётся из i18n (`projects.card.type.*`). */
+type ProjectType = 'ecommerce' | 'corporate' | 'landing' | 'web-service'
+
+/** Текст, переведённый для каждой локали сайта. */
+type LocalizedText = Record<AppLocale, string>
+
+type ProjectSource = {
+    title: LocalizedText
+    description: LocalizedText
     /** Живое демо проекта */
     demo: string
     /** Публичный репозиторий с кодом */
@@ -16,4 +22,10 @@ type Project = {
     year: number
 }
 
-export type { Project, ProjectType }
+/** Проект с текстами уже выбранной локали — форма для компонентов. */
+type Project = Omit<ProjectSource, 'title' | 'description'> & {
+    title: string
+    description: string
+}
+
+export type { LocalizedText, Project, ProjectSource, ProjectType }

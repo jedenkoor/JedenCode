@@ -1,19 +1,24 @@
 <template>
     <div class="container not-found-page">
-        <h1 class="not-found-page__title">Страница не найдена</h1>
-        <p class="not-found-page__text">Возможно, ссылка устарела или в адресе опечатка.</p>
-        <NuxtLink class="not-found-page__link" :to="localePath('/')">Вернуться на главную</NuxtLink>
+        <h1 class="not-found-page__title">{{ t('notFound.title') }}</h1>
+        <p class="not-found-page__text">{{ t('notFound.text') }}</p>
+        <NuxtLink class="not-found-page__link" :to="localePath('/')">{{ t('notFound.back') }}</NuxtLink>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useHead, useLocalePath } from '#imports'
+import { useHead, useI18n, useLocalePath, useSeoMeta } from '#imports'
 import { NuxtLink } from '#components'
 
+const { t } = useI18n()
 const localePath = useLocalePath()
 
+useSeoMeta({
+    title: () => t('notFound.pageTitle'),
+    description: () => t('notFound.description')
+})
+
 useHead({
-    title: 'Страница не найдена — JedenCode',
     meta: [{ name: 'robots', content: 'noindex' }]
 })
 </script>

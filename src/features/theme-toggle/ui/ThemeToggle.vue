@@ -2,7 +2,7 @@
     <button
         class="theme-toggle"
         type="button"
-        aria-label="Светлая тема"
+        :aria-label="t('theme.toggle')"
         :aria-pressed="isMounted ? isLightTheme : undefined"
         @click="toggleTheme"
     >
@@ -21,8 +21,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { useI18n } from '#imports'
 import { useTheme } from '../model/useTheme'
 
+const { t } = useI18n()
 const { isLightTheme, toggleTheme } = useTheme()
 
 /**

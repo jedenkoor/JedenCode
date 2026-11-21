@@ -1,5 +1,5 @@
 <template>
-    <ul class="projects-filter-tags" aria-label="Фильтр проектов по стеку">
+    <ul class="projects-filter-tags" :aria-label="t('projects.filter.stackLabel')">
         <li class="projects-filter-tags__item" v-for="item in stacks" :key="item">
             <label class="projects-filter-tags__label">
                 <input
@@ -15,6 +15,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '#imports'
+
+const { t } = useI18n()
+
 defineProps<{
     stacks: string[]
 }>()

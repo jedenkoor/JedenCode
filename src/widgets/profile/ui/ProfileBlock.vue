@@ -21,12 +21,17 @@
 </template>
 
 <script setup lang="ts">
-import { profile } from '@/entities/profile'
+import { computed } from 'vue'
+import { getProfile } from '@/entities/profile'
+import { useAppLocale } from '@/shared/composables'
 import ProfileOverview from './ProfileOverview.vue'
 import ProfileContacts from './ProfileContacts.vue'
 import ProfileExperienceList from './ProfileExperienceList.vue'
 import ProfileSkills from './ProfileSkills.vue'
 import ProfileEducationList from './ProfileEducationList.vue'
+
+const locale = useAppLocale()
+const profile = computed(() => getProfile(locale.value))
 </script>
 
 <style scoped>

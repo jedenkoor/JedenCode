@@ -2,7 +2,13 @@ import { fileURLToPath } from 'node:url'
 import { defineNuxtConfig } from 'nuxt/config'
 import { SITE_NAME, SITE_OG_IMAGE_URL, SITE_URL } from './src/app/config/site'
 import { THEME_INIT_SCRIPT } from './src/app/config/theme'
-import { APP_LOCALES, DEFAULT_LOCALE, LOCALE_NAMES } from './src/shared/constants/locale'
+import {
+    APP_LOCALES,
+    DEFAULT_LOCALE,
+    LOCALE_COOKIE_KEY,
+    LOCALE_LANGUAGES,
+    LOCALE_NAMES
+} from './src/shared/constants/locale'
 
 // Feature-Sliced Design on top of Nuxt:
 // - the FSD `app` layer (src/app) is Nuxt's srcDir: App.vue, routes, global styles;
@@ -17,14 +23,19 @@ export default defineNuxtConfig({
         defaultLocale: DEFAULT_LOCALE,
         strategy: 'prefix_except_default',
         baseUrl: SITE_URL,
+        langDir: 'locales',
         locales: APP_LOCALES.map(code => ({
             code,
-            language: code,
+            language: LOCALE_LANGUAGES[code],
             name: LOCALE_NAMES[code],
             file: `${code}.json`
         })),
-        // Язык выбирается переключателем: статическая генерация остаётся предсказуемой
-        detectBrowserLanguage: false
+        detectBrowserLanguage: {
+            useCookie: true,
+            cookieKey: LOCALE_COOKIE_KEY,
+            redirectOn: 'root',
+            fallbackLocale: DEFAULT_LOCALE
+        }
     },
 
     srcDir: 'src/app',
@@ -51,6 +62,7 @@ export default defineNuxtConfig({
                 { property: 'og:image', content: SITE_OG_IMAGE_URL },
                 { property: 'og:image:width', content: '1800' },
                 { property: 'og:image:height', content: '945' },
+                { name: 'twitter:card', content: 'summary_large_image' },
                 { name: 'msapplication-TileColor', content: '#222222' },
                 // Точное значение выставляет клиент под выбранную тему; здесь — значение по умолчанию
                 { name: 'theme-color', content: '#222222' }
@@ -78,6 +90,13 @@ export default defineNuxtConfig({
                 { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#222222' }
             ],
             script: [{ innerHTML: THEME_INIT_SCRIPT }]
+        }
+    },
+
+    // Обе локали генерируются статически: английская без префикса, русская — с /ru
+    nitro: {
+        prerender: {
+            routes: ['/', '/projects', '/ru', '/ru/projects']
         }
     },
 

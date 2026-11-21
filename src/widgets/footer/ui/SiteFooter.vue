@@ -1,16 +1,17 @@
 <template>
     <footer class="site-footer">
         <div class="container site-footer__container">
-            <SiteLogo :to="localePath('/')" />
+            <SiteLogo :to="localePath('/')" :label="t('common.logoHome')" />
             <span class="site-footer__copyright">JedenCode © {{ copyrightYear }}</span>
         </div>
     </footer>
 </template>
 
 <script setup lang="ts">
-import { useLocalePath } from '#imports'
+import { useI18n, useLocalePath } from '#imports'
 import { SiteLogo } from '@/shared/ui/logo'
 
+const { t } = useI18n()
 const localePath = useLocalePath()
 const copyrightYear = new Date().getFullYear()
 </script>

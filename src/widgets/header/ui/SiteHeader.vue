@@ -1,27 +1,34 @@
 <template>
     <header class="site-header">
         <div class="container site-header__container">
-            <SiteLogo :to="localePath('/')" />
+            <SiteLogo :to="localePath('/')" :label="t('common.logoHome')" />
 
-            <nav class="site-header__nav" aria-label="Основная навигация">
+            <nav class="site-header__nav" :aria-label="t('nav.main')">
                 <ul class="site-header__list">
                     <li class="site-header__item">
-                        <NuxtLink class="site-header__link" :to="localePath('/projects')">Проекты</NuxtLink>
+                        <NuxtLink class="site-header__link" :to="localePath('/projects')">
+                            {{ t('nav.projects') }}
+                        </NuxtLink>
                     </li>
                 </ul>
             </nav>
 
-            <ThemeToggle class="site-header__toggle" />
+            <div class="site-header__actions">
+                <LocaleSwitch />
+                <ThemeToggle />
+            </div>
         </div>
     </header>
 </template>
 
 <script setup lang="ts">
-import { useLocalePath } from '#imports'
+import { useI18n, useLocalePath } from '#imports'
 import { NuxtLink } from '#components'
+import { LocaleSwitch } from '@/features/locale-switch'
 import { ThemeToggle } from '@/features/theme-toggle'
 import { SiteLogo } from '@/shared/ui/logo'
 
+const { t } = useI18n()
 const localePath = useLocalePath()
 </script>
 
@@ -57,7 +64,10 @@ const localePath = useLocalePath()
     }
 }
 
-.site-header__toggle {
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     margin-left: auto;
 }
 
@@ -68,6 +78,10 @@ const localePath = useLocalePath()
 
     .site-header__nav {
         margin-left: 24px;
+    }
+
+    .site-header__actions {
+        gap: 12px;
     }
 }
 </style>
