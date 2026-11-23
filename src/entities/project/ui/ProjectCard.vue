@@ -25,7 +25,7 @@
         </div>
 
         <p class="project-card__descr">{{ project.description }}</p>
-        <p class="project-card__type">{{ t(`projects.card.type.${project.type}`) }}</p>
+        <p class="project-card__type">{{ t(PROJECT_TYPE_MESSAGE_KEYS[project.type]) }}</p>
 
         <ul class="project-card__tags">
             <li class="project-card__tag" v-for="technology in project.stack" :key="technology">#{{ technology }}</li>
@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import { useI18n } from '#imports'
+import { PROJECT_TYPE_MESSAGE_KEYS } from '../model/projectTypeMessages'
 import type { Project } from '../model/types'
 
 const { t } = useI18n()

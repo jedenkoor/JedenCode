@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useHead, useI18n, useLocaleHead, useRoute, useSeoMeta } from '#imports'
 import { NuxtPage } from '#components'
 import { SiteHeader } from '@/widgets/header'
@@ -24,6 +25,21 @@ const route = useRoute()
 const appLocale = useAppLocale()
 const localeHead = useLocaleHead({ seo: true })
 
+/**
+ * Модуль добавляет hreflang и для кода локали (en), и для языка (en-US).
+ * Для сайта без региональных вариантов оставляем только generic en/ru.
+ */
+const localeLinks = computed(() => {
+    const links = localeHead.value.link
+    const hasGenericLanguage = (href: string): boolean =>
+        links.some(link => 'hreflang' in link && link.href === href && link.hreflang !== 'x-default' && !link.hreflang.includes('-'))
+
+    return links.filter(link => {
+        if (!('hreflang' in link) || link.hreflang === 'x-default') return true
+        return !link.hreflang.includes('-') || !hasGenericLanguage(link.href)
+    })
+})
+
 useSeoMeta({
     title: () => t('seo.siteTitle'),
     description: () => t('seo.siteDescription'),
@@ -36,7 +52,7 @@ useSeoMeta({
 
 useHead(() => ({
     htmlAttrs: localeHead.value.htmlAttrs,
-    link: localeHead.value.link,
+    link: localeLinks.value,
     meta: localeHead.value.meta,
     script: [
         {

@@ -22,7 +22,7 @@ const { t } = useI18n()
 const locale = useAppLocale()
 const projects = computed(() => getProjects(locale.value))
 
-const { filters, sort, stacks, filteredProjects } = useProjectsFilter(projects)
+const { filters, sort, stacks, filteredProjects } = useProjectsFilter(projects, locale)
 </script>
 
 <style scoped>

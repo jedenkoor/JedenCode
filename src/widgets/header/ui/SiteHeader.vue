@@ -67,7 +67,7 @@ const localePath = useLocalePath()
 .site-header__actions {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 32px;
     margin-left: auto;
 }
 

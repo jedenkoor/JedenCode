@@ -7,7 +7,7 @@
                     :class="{ 'm-active': code === appLocale }"
                     :to="switchLocalePath(code)"
                     :hreflang="LOCALE_LANGUAGES[code]"
-                    :aria-current="code === appLocale ? 'true' : undefined"
+                    :aria-current="code === appLocale ? 'page' : undefined"
                     :aria-label="LOCALE_NAMES[code]"
                     @click="handleSelect(code)"
                 >
@@ -35,9 +35,12 @@ const { t } = useI18n()
 const appLocale = useAppLocale()
 const switchLocalePath = useSwitchLocalePath()
 
+const isSecureCookie = import.meta.client && window.location.protocol === 'https:'
+
 const localeCookie = useCookie<string | null>(LOCALE_COOKIE_KEY, {
     path: '/',
     sameSite: 'lax',
+    secure: isSecureCookie,
     maxAge: LOCALE_COOKIE_MAX_AGE_SECONDS
 })
 

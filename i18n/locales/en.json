@@ -9,7 +9,8 @@
         "logoHome": "JedenCode — go to home page"
     },
     "theme": {
-        "toggle": "Light theme"
+        "toLight": "Switch to light theme",
+        "toDark": "Switch to dark theme"
     },
     "main": {
         "title": "Personal website of web developer JedenCode"

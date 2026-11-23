@@ -1,3 +1,4 @@
+import { PROFILE_CONTACTS, PROFILE_CV_URL } from '../common'
 import type { Profile } from '../types'
 
 export const ru: Profile = {
@@ -8,32 +9,7 @@ export const ru: Profile = {
         '7+ лет разрабатываю SPA и SSR-приложения на Vue, Nuxt, React и TypeScript. Отвечаю за архитектуру фронтенда, производительность и качество продукта; работаю в связке с бэкендом, дизайном и продуктом.',
     location: 'Санкт-Петербург, Россия',
     experienceYears: 7,
-    contacts: [
-        {
-            kind: 'email',
-            label: 'kuzmin.daniil.alexandrovich@gmail.com',
-            href: 'mailto:kuzmin.daniil.alexandrovich@gmail.com',
-            isExternal: false
-        },
-        {
-            kind: 'telegram',
-            label: 'Telegram',
-            href: 'https://t.me/Jedenkoor',
-            isExternal: true
-        },
-        {
-            kind: 'github',
-            label: 'GitHub',
-            href: 'https://github.com/jedenkoor',
-            isExternal: true
-        },
-        {
-            kind: 'linkedin',
-            label: 'LinkedIn',
-            href: 'https://www.linkedin.com/in/daniil-kuzmin-7476b1231',
-            isExternal: true
-        }
-    ],
+    contacts: PROFILE_CONTACTS,
     experience: [
         {
             company: 'Elisoft',
@@ -128,5 +104,5 @@ export const ru: Profile = {
             items: ['Cursor', 'Claude', 'GitHub Copilot']
         }
     ],
-    cvUrl: '/cv/daniil-kuzmin-frontend-developer.pdf'
+    cvUrl: PROFILE_CV_URL
 }

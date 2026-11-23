@@ -9,10 +9,10 @@ export type SortOption = {
     /** Ключ перевода: `projects.filter.sort.<labelKey>` */
     labelKey: SortLabelKey
     direction: SortDirection
-    compare: (a: Project, b: Project) => number
+    compare: (a: Project, b: Project, collator: Intl.Collator) => number
 }
 
-const byTitle = (a: Project, b: Project): number => a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+const byTitle = (a: Project, b: Project, collator: Intl.Collator): number => collator.compare(a.title, b.title)
 
 export const sortOptions: SortOption[] = [
     {
@@ -28,7 +28,7 @@ export const sortOptions: SortOption[] = [
         compare: (a, b) => b.year - a.year
     },
     { value: 'alphabet-asc', labelKey: 'alphabetAsc', direction: 'asc', compare: byTitle },
-    { value: 'alphabet-desc', labelKey: 'alphabetDesc', direction: 'desc', compare: (a, b) => byTitle(b, a) }
+    { value: 'alphabet-desc', labelKey: 'alphabetDesc', direction: 'desc', compare: (a, b, collator) => byTitle(b, a, collator) }
 ]
 
 export const findSortOption = (value: SortValue): SortOption =>

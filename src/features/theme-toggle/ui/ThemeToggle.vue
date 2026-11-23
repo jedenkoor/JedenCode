@@ -2,7 +2,7 @@
     <button
         class="theme-toggle"
         type="button"
-        :aria-label="t('theme.toggle')"
+        :aria-label="themeLabel"
         :aria-pressed="isMounted ? isLightTheme : undefined"
         @click="toggleTheme"
     >
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from '#imports'
 import { useTheme } from '../model/useTheme'
 
@@ -33,6 +33,10 @@ const { isLightTheme, toggleTheme } = useTheme()
  * расходятся и Vue сообщает о hydration mismatch.
  */
 const isMounted = ref<boolean>(false)
+
+const themeLabel = computed<string>(() =>
+    isMounted.value && isLightTheme.value ? t('theme.toDark') : t('theme.toLight')
+)
 
 onMounted(() => {
     isMounted.value = true

@@ -2,13 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { defineNuxtConfig } from 'nuxt/config'
 import { SITE_NAME, SITE_OG_IMAGE_URL, SITE_URL } from './src/app/config/site'
 import { THEME_INIT_SCRIPT } from './src/app/config/theme'
-import {
-    APP_LOCALES,
-    DEFAULT_LOCALE,
-    LOCALE_COOKIE_KEY,
-    LOCALE_LANGUAGES,
-    LOCALE_NAMES
-} from './src/shared/constants/locale'
+import { APP_LOCALES, DEFAULT_LOCALE, LOCALE_LANGUAGES, LOCALE_NAMES } from './src/shared/constants/locale'
 
 // Feature-Sliced Design on top of Nuxt:
 // - the FSD `app` layer (src/app) is Nuxt's srcDir: App.vue, routes, global styles;
@@ -30,12 +24,8 @@ export default defineNuxtConfig({
             name: LOCALE_NAMES[code],
             file: `${code}.json`
         })),
-        detectBrowserLanguage: {
-            useCookie: true,
-            cookieKey: LOCALE_COOKIE_KEY,
-            redirectOn: 'root',
-            fallbackLocale: DEFAULT_LOCALE
-        }
+        // Автоопределение по браузеру отключено: сохраняем только явный выбор
+        detectBrowserLanguage: false
     },
 
     srcDir: 'src/app',

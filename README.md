@@ -35,7 +35,8 @@ and composables are disabled: everything is imported explicitly through public A
 ## Languages
 - English is the default locale at `/`, Russian is served from `/ru/` (`prefix_except_default`).
 - The header switch builds locale-aware links with `switchLocalePath` and stores the choice in the
-  `i18n_locale` cookie, so a later visit to `/` keeps the selected language.
+  `i18n_locale` cookie. On a later visit to `/`, a client plugin redirects only by that saved choice;
+  browser language is not used for automatic redirects.
 - `@nuxtjs/i18n` renders `<html lang>`, `canonical`, `hreflang` and `og:locale`; per-page SEO lives
   in `useSeoMeta`, JSON-LD is localized in `src/app/config/seo.ts`.
 - UI strings are in `i18n/locales/*.json`; profile and project content are localized in the entity
