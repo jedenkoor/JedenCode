@@ -1,5 +1,5 @@
-import { computed, onMounted, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
-import { onNuxtReady, useRoute, useRouter } from '#imports'
+import { computed, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
+import { useRoute, useRouter } from '#imports'
 import type { LocationQuery } from 'vue-router'
 import type { Project } from '@/entities/project'
 import type { AppLocale } from '@/shared/constants'
@@ -39,25 +39,6 @@ const readQueryState = (query: LocationQuery, stacks: readonly string[]): QueryS
     sort: checkIsSortValue(query.sort) ? query.sort : DEFAULT_SORT
 })
 
-/** Снимок query из адресной строки: не теряет параметры вне stack/sort. */
-const readUrlQuery = (): LocationQuery => {
-    if (!import.meta.client) return {}
-
-    const query: LocationQuery = {}
-    new URLSearchParams(window.location.search).forEach((value, key) => {
-        const current = query[key]
-        if (current === undefined) {
-            query[key] = value
-        } else if (Array.isArray(current)) {
-            current.push(value)
-        } else {
-            query[key] = [current, value]
-        }
-    })
-
-    return query
-}
-
 /**
  * Фильтрация и сортировка проектов.
  *
@@ -78,9 +59,7 @@ export function useProjectsFilter(
 
     const stacks = computed<string[]>(() => [...new Set(projectList.value.flatMap(project => project.stack))].sort())
 
-    // На клиенте адресная строка может быть точнее route.query при гидратации
-    const initialQuery = import.meta.client ? { ...route.query, ...readUrlQuery() } : route.query
-    const initialState = readQueryState(initialQuery, stacks.value)
+    const initialState = readQueryState(route.query, stacks.value)
     const filters = ref<string[]>(initialState.filters)
     const sort = ref<SortValue>(initialState.sort)
 
@@ -93,7 +72,7 @@ export function useProjectsFilter(
     })
 
     const applyQuery = (): void => {
-        const query = readUrlQuery()
+        const query = { ...route.query }
 
         if (filters.value.length) {
             // Один параметр: ?stack=Vue,Webpack — ключ не дублируется
@@ -113,64 +92,10 @@ export function useProjectsFilter(
 
     watch([filters, sort], applyQuery)
 
-    // На статике router при гидратации может потерять query из адреса.
-    // Если фильтры уже видны в URL, применяем их сразу, не дожидаясь idle.
-    onMounted(() => {
-        const urlQuery = new URLSearchParams(window.location.search)
-        const nextState = readQueryState(
-            {
-                stack: urlQuery.getAll('stack'),
-                sort: urlQuery.get('sort')
-            },
-            stacks.value
-        )
-
-        if (!nextState.filters.length && nextState.sort === DEFAULT_SORT) return
-
-        if (nextState.filters.join('|') !== filters.value.join('|')) {
-            filters.value = nextState.filters
-        }
-        if (nextState.sort !== sort.value) {
-            sort.value = nextState.sort
-        }
-
-        applyQuery()
-    })
-
-    // Во время hydration query может кратковременно прийти пустым:
-    // реагируем на навигацию только после готовности Nuxt.
-    // Здесь же — страховка для статики, если onMounted ещё не видел query.
-    let isRouteSyncReady = false
-    onNuxtReady(() => {
-        isRouteSyncReady = true
-
-        const urlQuery = new URLSearchParams(window.location.search)
-        const nextState = readQueryState(
-            {
-                stack: urlQuery.getAll('stack'),
-                sort: urlQuery.get('sort')
-            },
-            stacks.value
-        )
-
-        if (!nextState.filters.length && nextState.sort === DEFAULT_SORT) return
-
-        if (nextState.filters.join('|') !== filters.value.join('|')) {
-            filters.value = nextState.filters
-        }
-        if (nextState.sort !== sort.value) {
-            sort.value = nextState.sort
-        }
-
-        applyQuery()
-    })
-
     // Навигация назад/вперёд меняет query без изменения локального состояния
     watch(
         () => route.query,
         query => {
-            if (!isRouteSyncReady) return
-
             const nextState = readQueryState(query, stacks.value)
             if (nextState.filters.join('|') !== filters.value.join('|')) {
                 filters.value = nextState.filters
