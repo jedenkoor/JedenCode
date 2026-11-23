@@ -11,6 +11,8 @@ import { APP_LOCALES, DEFAULT_LOCALE, LOCALE_LANGUAGES, LOCALE_NAMES } from './s
 export default defineNuxtConfig({
     compatibilityDate: '2026-11-01',
 
+    ssr: true,
+
     modules: ['@nuxtjs/i18n'],
 
     i18n: {
@@ -80,13 +82,6 @@ export default defineNuxtConfig({
                 { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#222222' }
             ],
             script: [{ innerHTML: THEME_INIT_SCRIPT }]
-        }
-    },
-
-    // Обе локали генерируются статически: английская без префикса, русская — с /ru
-    nitro: {
-        prerender: {
-            routes: ['/', '/projects', '/ru', '/ru/projects']
         }
     },
 
