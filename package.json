@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt typecheck && nuxt generate",
+    "build": "nuxt typecheck && nuxt build",
+    "start": "node .output/server/index.mjs",
     "type-check": "nuxt typecheck",
     "preview": "nuxt preview",
     "lint": "eslint .",
-    "deploy": "npm run build && node scripts/deploy.js",
+    "deploy": "npm run build && node scripts/deploy-ssr.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -20,7 +21,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@nuxtjs/i18n": "^10.6.0",
-    "@samkirkland/ftp-deploy": "^1.2.5",
     "@types/node": "^26.6.6",
     "@vue/eslint-config-typescript": "^14.9.0",
     "eslint": "^10.14.0",

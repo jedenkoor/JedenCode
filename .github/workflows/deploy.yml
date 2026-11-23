@@ -1,20 +1,17 @@
-name: Deploy
+name: Deploy SSR
 
-# Build once, then upload to Jino with up to 3 attempts, each on a fresh runner
-# (see ftp-upload.yml for why). Local fallback: `npm run deploy`.
+# Builds the Nuxt SSR bundle and uploads it to the server over SSH.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Queue deploys instead of cancelling: an interrupted FTP upload can leave
-# the server's .ftp-deploy-sync-state.json out of sync with the files.
 concurrency:
   group: deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -30,54 +27,24 @@ jobs:
 
       - run: npm run build
 
-      - uses: actions/upload-artifact@v7
-        with:
-          name: dist
-          path: .output/public/
-          include-hidden-files: true # keep .htaccess
-          if-no-files-found: error
-          retention-days: 1
-
-  deploy-1:
-    needs: build
-    uses: ./.github/workflows/ftp-upload.yml
-    with:
-      attempt: 1
-    secrets: inherit
-
-  deploy-2:
-    needs: [build, deploy-1]
-    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' }}
-    uses: ./.github/workflows/ftp-upload.yml
-    with:
-      attempt: 2
-    secrets: inherit
-
-  deploy-3:
-    needs: [build, deploy-1, deploy-2]
-    if: ${{ !cancelled() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' && needs.deploy-2.outputs.deployed != 'true' }}
-    uses: ./.github/workflows/ftp-upload.yml
-    with:
-      attempt: 3
-    secrets: inherit
-
-  result:
-    needs: [build, deploy-1, deploy-2, deploy-3]
-    if: ${{ always() && needs.build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check that one attempt deployed
+      - name: Prepare SSH key
         run: |
-          for attempt in 1 2 3; do
-            case $attempt in
-              1) deployed='${{ needs.deploy-1.outputs.deployed }}' ;;
-              2) deployed='${{ needs.deploy-2.outputs.deployed }}' ;;
-              3) deployed='${{ needs.deploy-3.outputs.deployed }}' ;;
-            esac
-            if [ "$deployed" = "true" ]; then
-              echo "Deployed on attempt $attempt" | tee -a "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
-          done
-          echo "::error::All 3 upload attempts failed. Deploy locally: npm run deploy"
-          exit 1
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Deploy over SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY_PATH: ~/.ssh/deploy_key
+          SSH_TARGET_DIR: ${{ secrets.SSH_TARGET_DIR }}
+        run: node scripts/deploy-ssr.mjs
+
+      - name: Health check
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            "https://${{ secrets.SSH_HOST }}/" > /dev/null
+          test "$(curl --silent --show-error --retry 5 --retry-delay 2 \
+            -o /dev/null -w '%{http_code}' "https://${{ secrets.SSH_HOST }}/ru/unknown-page")" = "404"

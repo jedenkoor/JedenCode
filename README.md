@@ -52,9 +52,14 @@ npm install
 npm run dev
 ```
 
-### Type-checks and generates the static site into `.output/public/`
+### Type-checks and builds the SSR server into `.output/`
 ```
 npm run build
+```
+
+### Start the SSR server locally
+```
+npm run start
 ```
 
 ### Preview production build
@@ -72,25 +77,35 @@ npm run type-check
 npm run lint
 ```
 
-### Deploys to hosting (jedenkoor.ru)
-Every push to `main` deploys automatically via GitHub Actions (`.github/workflows/deploy.yml`):
-lint + build, then up to 3 FTPS upload attempts, each on a fresh runner, because some runner IPs
-can't reach the hosting. Credentials are in the repository secrets
-`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR`.
+### Deploys the SSR build
+The site runs as a Node/Nitro application behind Passenger on shared hosting. Every push to `main`
+deploys automatically via GitHub Actions (`.github/workflows/deploy.yml`): lint, `nuxt build`,
+upload `.output` over SSH, then restart Passenger via `tmp/restart.txt`.
 
-Manual / fallback deploy from your machine builds the project and uploads only changed files
-from `.output/public/` over FTPS. It shares the sync state on the server with CI, so both can be mixed.
-Credentials are read from `.env.deploy.local` (git-ignored):
+Repository secrets:
 ```
-FTP_SERVER=...
-FTP_USERNAME=...
-FTP_PASSWORD='...'
-FTP_SERVER_DIR=domains/jedenkoor.ru/
+SSH_HOST=<host>
+SSH_PORT=22
+SSH_USER=<user>
+SSH_TARGET_DIR=<path to the app directory>/
+SSH_PRIVATE_KEY=<private key contents>
 ```
+
+Manual deploy from your machine (the same script as CI):
 ```
 npm run deploy
-npm run deploy -- --dry-run   # show changes without uploading
 ```
+
+Local target and key are read from `.env.deploy.local` (git-ignored):
+```
+SSH_HOST=<host>
+SSH_PORT=22
+SSH_USER=<user>
+SSH_KEY_PATH=~/.ssh/<deploy key>
+SSH_TARGET_DIR=<path to the app directory>/
+```
+
+The deploy replaces `.output` on the server and restarts the application; no backup copy is kept.
 
 ### Customize configuration
 See [Vite Configuration Reference](https://vite.dev/config/).
