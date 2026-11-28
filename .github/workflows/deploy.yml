@@ -1,6 +1,7 @@
 name: Deploy SSR
 
-# Builds the Nuxt SSR bundle and uploads it to the server over SSH.
+# Build once, then try up to three deploys on fresh runners: some GitHub
+# runner networks have no route to the hosting, a new runner usually does.
 on:
   push:
     branches: [main]
@@ -11,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -27,24 +28,36 @@ jobs:
 
       - run: npm run build
 
-      - name: Prepare SSH key
-        run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ssr-bundle
+          path: |
+            .output
+            deploy
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
 
-      - name: Deploy over SSH
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY_PATH: ~/.ssh/deploy_key
-          SSH_TARGET_DIR: ${{ secrets.SSH_TARGET_DIR }}
-        run: node scripts/deploy-ssr.mjs
+  deploy-1:
+    needs: build
+    if: ${{ needs.build.result == 'success' }}
+    uses: ./.github/workflows/deploy-attempt.yml
+    with:
+      attempt: 1
+    secrets: inherit
 
-      - name: Health check
-        run: |
-          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
-            "${{ secrets.SITE_URL }}/" > /dev/null
-          test "$(curl --silent --show-error --retry 5 --retry-delay 2 \
-            -o /dev/null -w '%{http_code}' "${{ secrets.SITE_URL }}/ru/unknown-page")" = "404"
+  deploy-2:
+    needs: [build, deploy-1]
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.result == 'failure' }}
+    uses: ./.github/workflows/deploy-attempt.yml
+    with:
+      attempt: 2
+    secrets: inherit
+
+  deploy-3:
+    needs: [build, deploy-1, deploy-2]
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy-2.result == 'failure' }}
+    uses: ./.github/workflows/deploy-attempt.yml
+    with:
+      attempt: 3
+    secrets: inherit

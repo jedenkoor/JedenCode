@@ -1,0 +1,45 @@
+name: Deploy over SSH
+
+on:
+  workflow_call:
+    inputs:
+      attempt:
+        description: Attempt number, shown in the step name
+        required: true
+        type: number
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: ssr-bundle
+
+      - name: Prepare SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Deploy over SSH (attempt ${{ inputs.attempt }})
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY_PATH: ~/.ssh/deploy_key
+          SSH_TARGET_DIR: ${{ secrets.SSH_TARGET_DIR }}
+        run: node scripts/deploy-ssr.mjs
+
+      - name: Health check
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            "${{ secrets.SITE_URL }}/" > /dev/null
+          test "$(curl --silent --show-error --retry 5 --retry-delay 2 \
+            -o /dev/null -w '%{http_code}' "${{ secrets.SITE_URL }}/ru/unknown-page")" = "404"
