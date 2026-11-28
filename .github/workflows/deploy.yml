@@ -45,6 +45,6 @@ jobs:
       - name: Health check
         run: |
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
-            "https://${{ secrets.SSH_HOST }}/" > /dev/null
+            "${{ secrets.SITE_URL }}/" > /dev/null
           test "$(curl --silent --show-error --retry 5 --retry-delay 2 \
-            -o /dev/null -w '%{http_code}' "https://${{ secrets.SSH_HOST }}/ru/unknown-page")" = "404"
+            -o /dev/null -w '%{http_code}' "${{ secrets.SITE_URL }}/ru/unknown-page")" = "404"
