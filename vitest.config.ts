@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
+import { defineVitestConfig } from '@nuxt/test-utils/config'
 
-export default defineConfig({
+export default defineVitestConfig({
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -9,6 +9,11 @@ export default defineConfig({
     },
     test: {
         environment: 'node',
-        include: ['tests/unit/**/*.spec.ts']
+        include: ['tests/unit/**/*.spec.ts', 'tests/component/**/*.spec.ts'],
+        environmentOptions: {
+            nuxt: {
+                domEnvironment: 'happy-dom'
+            }
+        }
     }
 })
