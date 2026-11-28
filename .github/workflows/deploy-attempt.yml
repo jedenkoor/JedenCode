@@ -1,4 +1,4 @@
-name: Deploy over SSH
+name: Deploy attempt
 
 on:
   workflow_call:
@@ -7,10 +7,16 @@ on:
         description: Attempt number, shown in the step name
         required: true
         type: number
+    outputs:
+      deployed:
+        description: Whether this attempt deployed the bundle and passed the health check
+        value: ${{ jobs.deploy.outputs.deployed }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      deployed: ${{ steps.result.outputs.deployed }}
     steps:
       - uses: actions/checkout@v5
 
@@ -28,7 +34,11 @@ jobs:
           printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
+      # A failed attempt must not fail the whole run: another runner may still
+      # reach the hosting. The result is reported through the `deployed` output.
       - name: Deploy over SSH (attempt ${{ inputs.attempt }})
+        id: deploy
+        continue-on-error: true
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
@@ -38,8 +48,22 @@ jobs:
         run: node scripts/deploy-ssr.mjs
 
       - name: Health check
+        id: health
+        if: steps.deploy.outcome == 'success'
+        continue-on-error: true
         run: |
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             "${{ secrets.SITE_URL }}/" > /dev/null
           test "$(curl --silent --show-error --retry 5 --retry-delay 2 \
             -o /dev/null -w '%{http_code}' "${{ secrets.SITE_URL }}/ru/unknown-page")" = "404"
+
+      - name: Report attempt result
+        id: result
+        run: |
+          if [ "${{ steps.deploy.outcome }}" = "success" ] && [ "${{ steps.health.outcome }}" = "success" ]; then
+            echo "deployed=true" >> "$GITHUB_OUTPUT"
+            echo "Attempt ${{ inputs.attempt }} finished successfully"
+          else
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Deploy attempt ${{ inputs.attempt }} failed"
+          fi

@@ -48,7 +48,7 @@ jobs:
 
   deploy-2:
     needs: [build, deploy-1]
-    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.result == 'failure' }}
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' }}
     uses: ./.github/workflows/deploy-attempt.yml
     with:
       attempt: 2
@@ -56,8 +56,29 @@ jobs:
 
   deploy-3:
     needs: [build, deploy-1, deploy-2]
-    if: ${{ always() && needs.build.result == 'success' && needs.deploy-2.result == 'failure' }}
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' && needs.deploy-2.outputs.deployed != 'true' }}
     uses: ./.github/workflows/deploy-attempt.yml
     with:
       attempt: 3
     secrets: inherit
+
+  # Attempts never fail the run by themselves, so the final status is decided here.
+  verify:
+    needs: [build, deploy-1, deploy-2, deploy-3]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deploy result
+        run: |
+          if [ "${{ needs.build.result }}" != "success" ]; then
+            echo "Build failed"
+            exit 1
+          fi
+          if [ "${{ needs.deploy-1.outputs.deployed }}" = "true" ] || \
+             [ "${{ needs.deploy-2.outputs.deployed }}" = "true" ] || \
+             [ "${{ needs.deploy-3.outputs.deployed }}" = "true" ]; then
+            echo "Deployed successfully"
+            exit 0
+          fi
+          echo "All deploy attempts failed"
+          exit 1
