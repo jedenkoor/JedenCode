@@ -4,6 +4,9 @@ export type SortDirection = 'asc' | 'desc'
 export type SortValue = 'year-asc' | 'year-desc' | 'alphabet-asc' | 'alphabet-desc'
 export type SortLabelKey = 'yearAsc' | 'yearDesc' | 'alphabetAsc' | 'alphabetDesc'
 
+/** Сортировка по умолчанию: в URL её не пишем */
+export const DEFAULT_SORT: SortValue = 'year-desc'
+
 export type SortOption = {
     value: SortValue
     /** Ключ перевода: `projects.filter.sort.<labelKey>` */
@@ -32,4 +35,4 @@ export const sortOptions: SortOption[] = [
 ]
 
 export const findSortOption = (value: SortValue): SortOption =>
-    sortOptions.find(option => option.value === value) ?? sortOptions[0]!
+    sortOptions.find(option => option.value === value) ?? sortOptions.find(option => option.value === DEFAULT_SORT)!

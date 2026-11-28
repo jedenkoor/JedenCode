@@ -9,6 +9,8 @@
     "type-check": "nuxt typecheck",
     "preview": "nuxt preview",
     "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "deploy": "npm run build && node scripts/deploy-ssr.mjs",
     "postinstall": "nuxt prepare"
   },
@@ -28,6 +30,7 @@
     "globals": "^17.14.0",
     "jiti": "^2.7.0",
     "typescript": "^6.0.3",
+    "vitest": "^5.1.2",
     "vue-tsc": "^3.3.14"
   },
   "type": "module",
