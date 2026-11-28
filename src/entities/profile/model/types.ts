@@ -1,5 +1,5 @@
 /** Публичные контакты владельца сайта. */
-export type ProfileContactKind = 'email' | 'telegram' | 'github' | 'linkedin'
+export type ProfileContactKind = 'email' | 'phone' | 'telegram' | 'github' | 'linkedin'
 
 export type ProfileContact = {
     /** Стабильный ключ контакта для `v-for` */
@@ -17,6 +17,8 @@ export type ProfileProjectLink = {
 
 export type ProfileExperience = {
     company: string
+    /** Короткое описание компании: сфера, тип бизнеса */
+    descriptor?: string
     role: string
     /** Период в человекочитаемом виде: «2021 — 2026» */
     period: string

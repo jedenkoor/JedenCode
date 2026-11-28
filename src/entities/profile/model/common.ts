@@ -9,6 +9,12 @@ export const PROFILE_CONTACTS: ProfileContact[] = [
         isExternal: false
     },
     {
+        kind: 'phone',
+        label: '+7 904 554-96-05',
+        href: 'tel:+79045549605',
+        isExternal: false
+    },
+    {
         kind: 'telegram',
         label: 'Telegram',
         href: 'https://t.me/Jedenkoor',
@@ -27,5 +33,3 @@ export const PROFILE_CONTACTS: ProfileContact[] = [
         isExternal: true
     }
 ]
-
-export const PROFILE_CV_URL = '/cv/daniil-kuzmin-frontend-developer.pdf'

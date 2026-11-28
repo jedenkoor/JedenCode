@@ -8,7 +8,10 @@
                     <p class="profile-experience__job-role">{{ job.role }}</p>
                     <p class="profile-experience__job-period">{{ job.period }}</p>
                 </div>
-                <p class="profile-experience__job-company">{{ job.company }}</p>
+                <p class="profile-experience__job-company">
+                    {{ job.company }}
+                    <span v-if="job.descriptor" class="profile-experience__job-descriptor">{{ job.descriptor }}</span>
+                </p>
 
                 <ul class="profile-experience__achievements">
                     <li
@@ -89,6 +92,14 @@ defineProps<{
 .profile-experience__job-company {
     margin: 4px 0 12px;
     color: var(--accent, #7aedf5);
+}
+
+.profile-experience__job-descriptor {
+    margin-left: 6px;
+    color: var(--main-text, #fff);
+    font-weight: 400;
+    font-size: 14px;
+    opacity: 0.65;
 }
 
 .profile-experience__achievements {
