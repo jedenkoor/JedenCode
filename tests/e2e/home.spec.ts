@@ -20,7 +20,7 @@ test.describe('Главная', () => {
 
     test('переключатель языка ведёт на /ru и запоминает выбор в cookie', async ({ page }) => {
         await page.goto('/')
-        await page.getByRole('link', { name: 'Русский' }).click()
+        await page.getByRole('link', { name: /Русский/ }).click()
 
         await expect(page).toHaveURL(/\/ru$/)
         await expect(page.locator('html')).toHaveAttribute('lang', 'ru-RU')

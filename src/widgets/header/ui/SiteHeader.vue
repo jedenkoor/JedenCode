@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <header class="site-header">
         <div class="container site-header__container">
             <SiteLogo :to="localePath('/')" :label="t('common.logoHome')" />
@@ -60,7 +60,7 @@ const localePath = useLocalePath()
     &:hover,
     &:focus,
     &.router-link-active {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="profile-overview">
         <p id="profile-block-title" class="profile-overview__name">{{ fullName }}</p>
         <p class="profile-overview__role">{{ title }} — {{ headline }}</p>
@@ -54,7 +54,7 @@ defineProps<{
 
 .profile-overview__role {
     margin: 8px 0 20px;
-    color: var(--accent, #7aedf5);
+    color: var(--accent-text, #7aedf5);
     font-size: 18px;
 }
 

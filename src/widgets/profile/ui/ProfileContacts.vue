@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="profile-contacts">
         <a class="profile-contacts__action" :href="cvUrl" download>{{ t('profile.cv') }}</a>
         <a
@@ -47,8 +47,8 @@ defineProps<{
 
     &:hover,
     &:focus {
-        color: var(--accent, #7aedf5);
-        border-color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
+        border-color: var(--accent-text, #7aedf5);
     }
 }
 </style>

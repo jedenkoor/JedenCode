@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <nav class="locale-switch" :aria-label="t('nav.language')">
         <ul class="locale-switch__list">
             <li v-for="code in APP_LOCALES" :key="code" class="locale-switch__item">
@@ -8,10 +8,9 @@
                     :to="switchLocalePath(code)"
                     :hreflang="LOCALE_LANGUAGES[code]"
                     :aria-current="code === appLocale ? 'page' : undefined"
-                    :aria-label="LOCALE_NAMES[code]"
                     @click="handleSelect(code)"
                 >
-                    {{ code.toUpperCase() }}
+                    {{ code.toUpperCase() }}<span class="visually-hidden"> — {{ LOCALE_NAMES[code] }}</span>
                 </NuxtLink>
             </li>
         </ul>
@@ -67,7 +66,7 @@ function handleSelect(code: AppLocale): void {
     font-weight: 600;
     font-size: 14px;
     text-decoration: none;
-    opacity: 0.55;
+    opacity: 0.7;
     transition:
         color 0.2s,
         opacity 0.2s;
@@ -75,7 +74,7 @@ function handleSelect(code: AppLocale): void {
     &:hover,
     &:focus,
     &.m-active {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
         opacity: 1;
     }
 }

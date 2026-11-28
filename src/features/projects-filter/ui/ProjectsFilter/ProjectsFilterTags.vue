@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <ul class="projects-filter-tags" :aria-label="t('projects.filter.stackLabel')">
         <li class="projects-filter-tags__item" v-for="item in stacks" :key="item">
             <label class="projects-filter-tags__label">
@@ -44,7 +44,7 @@ const modelValue = defineModel<string[]>({ required: true })
 
     &:hover,
     &:focus {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 
     &::before {
@@ -65,13 +65,13 @@ const modelValue = defineModel<string[]>({ required: true })
 }
 
 .projects-filter-tags__input:checked + .projects-filter-tags__text {
-    color: var(--accent, #7aedf5);
+    color: var(--accent-text, #7aedf5);
     text-decoration: underline;
     text-underline-offset: 4px;
 }
 
 .projects-filter-tags__input:focus-visible + .projects-filter-tags__text {
-    outline: 2px solid var(--accent, #7aedf5);
+    outline: 2px solid var(--accent-text, #7aedf5);
     outline-offset: 4px;
     border-radius: 2px;
 }

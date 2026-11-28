@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="profile-experience">
         <h2 class="profile-experience__title">{{ t('profile.sections.experience') }}</h2>
 
@@ -91,7 +91,7 @@ defineProps<{
 
 .profile-experience__job-company {
     margin: 4px 0 12px;
-    color: var(--accent, #7aedf5);
+    color: var(--accent-text, #7aedf5);
 }
 
 .profile-experience__job-descriptor {
@@ -151,7 +151,7 @@ defineProps<{
 
     &:hover,
     &:focus {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="container not-found-page">
         <h1 class="not-found-page__title">{{ t('notFound.title') }}</h1>
         <p class="not-found-page__text">{{ t('notFound.text') }}</p>
@@ -41,7 +41,7 @@ useHead({
 }
 
 .not-found-page__link {
-    color: var(--accent, #7aedf5);
+    color: var(--accent-text, #7aedf5);
     font-weight: 600;
 }
 </style>

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <button
         type="button"
         class="projects-filter-reset"
@@ -46,7 +46,7 @@ const emit = defineEmits<{
 
     &:hover,
     &:focus {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 

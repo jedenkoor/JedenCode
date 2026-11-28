@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <li class="project-card">
         <div class="project-card__media">
             <!-- Логотип декоративный: название проекта озвучено заголовком ниже -->
@@ -159,7 +159,7 @@ withDefaults(
 
     &:hover,
     &:focus {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 

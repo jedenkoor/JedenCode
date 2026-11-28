@@ -1,4 +1,4 @@
-*,
+﻿*,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -6,7 +6,7 @@
 
 /* Видимый фокус только при навигации с клавиатуры: мышиный клик рамку не показывает */
 :focus-visible {
-    outline: 2px solid var(--accent, #7aedf5);
+    outline: 2px solid var(--accent-text, #7aedf5);
     outline-offset: 2px;
 }
 

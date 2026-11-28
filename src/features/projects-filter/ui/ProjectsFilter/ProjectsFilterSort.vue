@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="projects-filter-sort" v-click-outside="hideSort" @keydown.esc="handleSortEscape">
         <button
             ref="sortButtonEl"
@@ -114,7 +114,7 @@ function changeSort(value: SortValue) {
     &:hover,
     &:focus,
     &.m-active {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 
@@ -160,7 +160,7 @@ function changeSort(value: SortValue) {
     &:hover,
     &:focus,
     &.m-active {
-        color: var(--accent, #7aedf5);
+        color: var(--accent-text, #7aedf5);
     }
 }
 
