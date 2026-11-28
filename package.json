@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
-    "nuxt": "^4.6.4",
-    "vue": "^3.5.44",
+    "nuxt": "^4.7.0",
+    "vue": "^3.5.46",
     "vue-router": "^5.4.0"
   },
   "devDependencies": {
