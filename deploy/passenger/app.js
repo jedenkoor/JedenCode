@@ -13,7 +13,20 @@
  */
 process.env.NITRO_PORT ??= process.env.PORT
 
-import('./.output/server/index.mjs').catch(error => {
+// Секреты (MySQL и прочее) лежат в .env рядом с приложением и не попадают в git.
+// В окружениях без файла переменные приходят из process.env.
+try {
+    process.loadEnvFile('.env')
+} catch {
+    // .env отсутствует — это нормально для локальной разработки
+}
+
+// Путь к серверной сборке вычисляем как URL: .output появляется только после
+// `nuxt build` и не индексируется IDE, а статический импорт давал бы ложные
+// ошибки «Cannot resolve directory».
+const entry = new URL('./.output/server/index.mjs', import.meta.url)
+
+import(entry.href).catch(error => {
     console.error('[passenger-ssr] Nuxt server failed to start', error)
     process.exit(1)
 })

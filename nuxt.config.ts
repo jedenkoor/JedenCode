@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { defineNuxtConfig } from 'nuxt/config'
 import { SITE_NAME, SITE_OG_IMAGE_URL, SITE_URL } from './src/app/config/site'
 import { THEME_INIT_SCRIPT } from './src/app/config/theme'
-import { APP_LOCALES, DEFAULT_LOCALE, LOCALE_LANGUAGES, LOCALE_NAMES } from './src/shared/constants/locale'
+import { APP_LOCALES, DEFAULT_LOCALE, LOCALE_LANGUAGES, LOCALE_NAMES } from './src/shared/constants'
 
 // Feature-Sliced Design on top of Nuxt:
 // - the FSD `app` layer (src/app) is Nuxt's srcDir: App.vue, routes, global styles;
@@ -12,6 +12,15 @@ export default defineNuxtConfig({
     compatibilityDate: '2026-11-01',
 
     ssr: true,
+
+    runtimeConfig: {
+        // Доступы к MySQL: только на сервере, маппятся из NUXT_DB_* в .env
+        dbHost: 'localhost',
+        dbPort: '3306',
+        dbName: '',
+        dbUser: '',
+        dbPassword: ''
+    },
 
     modules: ['@nuxtjs/i18n'],
 
