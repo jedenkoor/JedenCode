@@ -1,6 +1,6 @@
 name: Deploy SSR
 
-# Build once, then try up to three deploys on fresh runners: some GitHub
+# Test, build once, then try up to three deploys on fresh runners: some GitHub
 # runner networks have no route to the hosting, a new runner usually does.
 on:
   push:
@@ -12,7 +12,24 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run test
+
+      - run: npx vue-tsc -p tests/tsconfig.json --noEmit
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -38,25 +55,55 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-  deploy-1:
+  e2e:
     needs: build
-    if: ${{ needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: ssr-bundle
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npx playwright test
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 3
+
+  deploy-1:
+    needs: [build, e2e]
+    if: ${{ needs.build.result == 'success' && needs.e2e.result == 'success' }}
     uses: ./.github/workflows/deploy-attempt.yml
     with:
       attempt: 1
     secrets: inherit
 
   deploy-2:
-    needs: [build, deploy-1]
-    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' }}
+    needs: [build, e2e, deploy-1]
+    if: ${{ always() && needs.build.result == 'success' && needs.e2e.result == 'success' && needs.deploy-1.outputs.deployed != 'true' }}
     uses: ./.github/workflows/deploy-attempt.yml
     with:
       attempt: 2
     secrets: inherit
 
   deploy-3:
-    needs: [build, deploy-1, deploy-2]
-    if: ${{ always() && needs.build.result == 'success' && needs.deploy-1.outputs.deployed != 'true' && needs.deploy-2.outputs.deployed != 'true' }}
+    needs: [build, e2e, deploy-1, deploy-2]
+    if: ${{ always() && needs.build.result == 'success' && needs.e2e.result == 'success' && needs.deploy-1.outputs.deployed != 'true' && needs.deploy-2.outputs.deployed != 'true' }}
     uses: ./.github/workflows/deploy-attempt.yml
     with:
       attempt: 3
@@ -64,14 +111,18 @@ jobs:
 
   # Attempts never fail the run by themselves, so the final status is decided here.
   verify:
-    needs: [build, deploy-1, deploy-2, deploy-3]
+    needs: [build, e2e, deploy-1, deploy-2, deploy-3]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check deploy result
+      - name: Check pipeline result
         run: |
           if [ "${{ needs.build.result }}" != "success" ]; then
             echo "Build failed"
+            exit 1
+          fi
+          if [ "${{ needs.e2e.result }}" != "success" ]; then
+            echo "E2E tests failed"
             exit 1
           fi
           if [ "${{ needs.deploy-1.outputs.deployed }}" = "true" ] || \
