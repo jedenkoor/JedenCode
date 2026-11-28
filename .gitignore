@@ -37,3 +37,8 @@ AGENTS.md
 .nuxt
 .output
 .data
+
+# Playwright
+test-results
+playwright-report
+blob-report
